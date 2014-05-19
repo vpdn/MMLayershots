@@ -48,26 +48,38 @@ In the Application Delegate, initialize the MMLayershots shared instance:
 then implement the delegate methods:
 
 ```objc
-// Delegate callback before psd starts rendering
-- (void)willCreatePSDDataForApplication:(UIApplication *)application {
-	// Show HUD or other means of blocking the UI, e.g. with MBProgressHUD
-	[MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];    	
+- (CGFloat)shouldCreatePSDDataAfterDelay {
+	// set a delay, e.g. to show a notification before starting the capture.
+	// During the capture, the screen currently doesn't support showing any
+	// progress indication. Everything that is shown will just simply be rendered
+	// as well.
+	CGFloat delay = 3.0;
+    return delay;
 }
 
-// Delegate callback after psd has been generated
-- (void)didCreatePSDDataForApplication:(UIApplication *)application data:(NSData *)data {
-#if (TARGET_IPHONE_SIMULATOR)
-	[data writeToFile:@"/tmp/your/location/of/choice/screen.psd" atomically:NO];
+- (void)willCreatePSDDataForScreen:(UIScreen *)screen {
+    //Creating psd now...
+}
+
+- (void)didCreatePSDDataForScreen:(UIScreen *)screen data:(NSData *)data {
+#if TARGET_IPHONE_SIMULATOR
+    [data writeToFile:@"/tmp/layershotsDemo.psd" atomically:NO];
+    NSLog(@"Saving psd to /tmp/layershotsDemo.psd");
 #else
-	// Send zipped psd via email
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailVC = [MFMailComposeViewController new];
+        [mailVC addAttachmentData:data mimeType:@"image/vnd.adobe.photoshop" fileName:@"layershots.psd"];
+        mailVC.delegate = self;
+        [self presentViewController:mailVC animated:YES completion:nil];
+    }
 #endif
-    [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
 }
 ```
 
 The iPhone Simulator doesn't trigger the screenshot notification when a screenshot is saved. You can trigger it manually by assigning a custom shortcut. Add this in your root viewcontroller or anywhere else along the responder chain:
 
 ```objc
+#if TARGET_IPHONE_SIMULATOR
 - (BOOL)canBecomeFirstResponder {
     return YES;
 }
@@ -79,15 +91,19 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 }
 
 - (void)didRequestPSDCreationFromCurrentViewState {
-	[[MMLayershots sharedInstance] triggerPSDCreation];
+    // simulate a screenshot notification
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
+    });
 }
+#endif
 ```
 
 
 ##Notes
 - The generated psd file is currently bigger than it needs to be. There isn't any bounds calculation in yet, so every layer is rendered in full screen.
 - Layers are currently not grouped and all named "Layer".
-- The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. I've only tested it with [Clockshots][] so far. The psd contains a (flattened) screenshot as the bottom layer of the psd, you can always fall back on that in case things screw up. Even better, fix the issue and submit a pull request, that way everyone benefits.
+- The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. I've only tested it with [Clockshots][] so far. If things don't look quite right, you can always fall back onto the screenshot (png). But also file an issue and submit a pull request, that way everyone benefits.
 
 
 ##Thanks
