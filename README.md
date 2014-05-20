@@ -36,7 +36,10 @@ The preferred way to install is via Cocoapods. Add this to your Podfile:
 	
 	pod 'MMLayershots'
 
-*20.05.2014: There's a problem with the spec I pushed yesterday to Cocoapods/Specs. Unfortunately the fix comes exactly at the time, where Cocoapods is transitioning to [Cocoapods Trunk][]. Pods are 'frozen' during the transitioning period (couple of days), so I won't be able to fix the pod until then. For now, you'll need to download the files and integrate them manually into your project.*
+*Note (20.05.2014): There's a problem with the spec I pushed yesterday to Cocoapods/Specs. Unfortunately this comes exactly at the time, where Cocoapods is transitioning to [Cocoapods Trunk][]. Pods are 'frozen' during the transitioning period (around a week), so I won't be able to push a fix to the official Cocoapods repository until then. For now, you'll need to reference the podspec in this repository directly (or download the files manually):*
+
+	pod 'MMLayershots', :podspec => 'https://raw.githubusercontent.com/vpdn/MMLayershots/master/MMLayershots.podspec'
+
 
 In the Application Delegate, initialize the MMLayershots shared instance:
 
