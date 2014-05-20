@@ -36,6 +36,8 @@ The preferred way to install is via Cocoapods. Add this to your Podfile:
 	
 	pod 'MMLayershots'
 
+*20.05.2014: There's a problem with the spec I pushed yesterday to Cocoapods/Specs. Unfortunately the fix comes exactly at the time, where Cocoapods is transitioning to [Cocoapods Trunk][]. Pods are 'frozen' during the transitioning period (couple of days), so I won't be able to fix the pod until then. For now, you'll need to download the files and integrate them manually into your project.*
+
 In the Application Delegate, initialize the MMLayershots shared instance:
 
 ```objc
@@ -115,3 +117,4 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 [framer.js sample]: http://vpdn.github.io/images/2014-05-18_Layershots/clockshots_animation.gif
 [Framer.js]: http://framerjs.com
 [Clockshots]: http://clockshots.com
+[Cocoapods Trunk]: http://blog.cocoapods.org/CocoaPods-Trunk/#trunk
