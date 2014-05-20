@@ -117,14 +117,20 @@ static MMLayershots *_sharedInstance;
             
             // hide own visuals while rendering children
             CGColorRef layerBgColor = layer.backgroundColor;
-            CGColorRef layerborderColor = layer.borderColor;
             layer.backgroundColor = [UIColor clearColor].CGColor;
+            CGColorRef layerBorderColor = layer.borderColor;
             layer.borderColor = [UIColor clearColor].CGColor;
+            CGColorRef layerShadowColor = layer.shadowColor;
+            layer.shadowColor = [UIColor clearColor].CGColor;
+            
             [layer.sublayers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [images addObjectsFromArray:[self buildImagesForLayer:obj rootLayer:rootLayer]];
             }];
-            layer.borderColor = layerborderColor;
+            
+            // reset layer colors
+            layer.borderColor = layerBorderColor;
             layer.backgroundColor = layerBgColor;
+            layer.shadowColor = layerShadowColor;
         } else {
             // base case
             [images addObject:[self imageFromLayer:rootLayer]];
