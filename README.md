@@ -30,6 +30,12 @@ Framer.js is one of the best tools we currently have out there to quickly protot
 
 For more infos, watch [Koen present the framework](http://vimeo.com/74712901) and make sure to [check out the examples](http://examples.framerjs.com/#Google Now - Overview.framer) on their website too.
 
+
+##Designer's preamble
+
+If you are a designer who doesn't touch code (might be infectious after all), the following lines might look like a message written by E.T.'s parents to guide him home. Rest assured, it's pretty simple to plug Layershots into your app and whoever you're developing your app with, can probably get it integrated in less than an hour. If there are questions, feel free to ping me up on twitter ([@vpdn](http://twitter.com/vpdn)) and I'm glad to help out if I can.
+
+
 ##How to use Layershots?
 
 The preferred way to install is via Cocoapods. Add this to your Podfile:
