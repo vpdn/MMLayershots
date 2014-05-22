@@ -26,8 +26,9 @@ static char kAssociatedObjectHiddenState;
 }
 
 - (void)endHidingSublayers {
-    NSAssert(objc_getAssociatedObject(self, &kAssociatedObjectHiddenState)!=nil,
-             @"Layer doesn't have a visibility state attached.");
+    if (objc_getAssociatedObject(self, &kAssociatedObjectHiddenState) == nil) {
+        NSLog(@"Following CALayer doesn't have a visibility state attached. This could happen because it was added while the psd was generated, i.e. after [CALayer beginHidingSublayers] was called.\n%@", self);
+    }
     
     NSNumber *hidden = objc_getAssociatedObject(self, &kAssociatedObjectHiddenState);
     self.hidden = [hidden boolValue];
