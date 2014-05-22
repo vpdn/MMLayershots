@@ -84,7 +84,7 @@
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailVC = [MFMailComposeViewController new];
         [mailVC addAttachmentData:data mimeType:@"image/vnd.adobe.photoshop" fileName:@"layershots.psd"];
-        mailVC.delegate = self;
+        mailVC.mailComposeDelegate = self;
         [self presentViewController:mailVC animated:YES completion:nil];
     }
 #endif
