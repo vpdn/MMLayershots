@@ -66,10 +66,20 @@
     NSLog(@"Creating psd now...");
 }
 
++ (NSString *)documentsDirectory
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return documentsDirectory;
+}
+
 - (void)didCreatePSDDataForScreen:(UIScreen *)screen data:(NSData *)data {
 #if TARGET_IPHONE_SIMULATOR
-    [data writeToFile:@"/tmp/layershotsDemo.psd" atomically:NO];
-    NSLog(@"Saving psd to /tmp/layershotsDemo.psd");
+    
+    NSString *dataPath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
+    [data writeToFile:dataPath atomically:NO];
+    NSLog(@"Saving psd to %@", dataPath);
+    
 #else
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailVC = [MFMailComposeViewController new];
