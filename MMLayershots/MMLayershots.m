@@ -31,12 +31,12 @@ static MMLayershots *_sharedInstance;
 }
 
 - (void)setDelegate:(id<MMLayershotsDelegate>)delegate {
-    _delegate = delegate;
-    if (delegate!=nil) {
-        [self registerNotification];
-    } else {
+    if (_delegate && !delegate) {
         [self unregisterNotification];
+    } else if (!_delegate && delegate) {
+        [self registerNotification];
     }
+    _delegate = delegate;
 }
 
 - (void)registerNotification {
