@@ -20,9 +20,8 @@ static char kAssociatedObjectHiddenState;
     objc_setAssociatedObject(self, &kAssociatedObjectHiddenState, [NSNumber numberWithBool:self.hidden], OBJC_ASSOCIATION_RETAIN);
     self.hidden = YES;
     
-    if (self.sublayers.count>0) {
-        [self.sublayers makeObjectsPerformSelector:@selector(beginHidingSublayers)];
-    }
+  for (CALayer *layer in [[rootLayer.sublayers copy] autorelease]) {
+    [layer removeFromSuperlayer];
 }
 
 - (void)endHidingSublayers {
