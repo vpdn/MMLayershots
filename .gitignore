@@ -14,14 +14,8 @@ build/
 xcuserdata
 profile
 *.moved-aside
-DerivedData
-.idea/
-# build artifacts
-bin/
-code_coverage/
-test-reports/
-project_temp/
-.bundle/
+
 # CocoaPods
 Pods/
 
+.DS_Store
