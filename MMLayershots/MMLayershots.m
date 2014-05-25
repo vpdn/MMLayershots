@@ -153,9 +153,9 @@ static MMLayershots *_sharedInstance;
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (UIInterfaceOrientationIsPortrait(orientation))
     {
-        size = layer.bounds.size;
+        size = [UIScreen mainScreen].bounds.size;
     } else {
-        size = CGSizeMake(layer.bounds.size.height, layer.bounds.size.width);
+        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
     }
     
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
