@@ -71,7 +71,7 @@ static MMLayershots *_sharedInstance;
 
 - (NSData *)psdRepresentationForScreen:(UIScreen *)screen {
     // Initial setup
-    CGSize size = [self sizeForDeviceOrientation];
+    CGSize size = [self sizeForInterfaceOrientation];
     size.width = size.width * [UIScreen mainScreen].scale;
     size.height = size.height * [UIScreen mainScreen].scale;
     
@@ -142,29 +142,36 @@ static MMLayershots *_sharedInstance;
 }
 
 - (UIImage *)imageFromLayer:(CALayer *)layer {
-    CGSize size = [self sizeForDeviceOrientation];
-    
+    CGSize size = [self sizeForInterfaceOrientation];
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // if interface is in landscape, apply transforms to context for layers that need transform
+    if (![self isInterfaceInPortrait] && CATransform3DIsIdentity(layer.transform)) {
+        CGContextTranslateCTM(ctx, 0, size.height);
+        CGContextRotateCTM(ctx, -M_PI_2);
+    }
     
-    [layer.sublayers[0] renderInContext:ctx];
-    
+    [layer renderInContext:ctx];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
 }
 
-- (CGSize)sizeForDeviceOrientation {
+- (CGSize)sizeForInterfaceOrientation {
     CGSize size;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UIInterfaceOrientationIsPortrait(orientation))
-    {
+    if ([self isInterfaceInPortrait]) {
         size = [UIScreen mainScreen].bounds.size;
     } else {
         size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
     }
     
     return size;
+}
+
+- (BOOL)isInterfaceInPortrait {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    return UIInterfaceOrientationIsPortrait(orientation);
 }
 
 @end
