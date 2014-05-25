@@ -15,7 +15,4 @@ xcuserdata
 profile
 *.moved-aside
 
-# CocoaPods
-Pods/
-
 .DS_Store
