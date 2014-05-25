@@ -71,14 +71,7 @@ static MMLayershots *_sharedInstance;
 
 - (NSData *)psdRepresentationForScreen:(UIScreen *)screen {
     // Initial setup
-    CGSize size;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UIInterfaceOrientationIsPortrait(orientation))
-    {
-        size = [UIScreen mainScreen].bounds.size;
-    } else {
-        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
-    }
+    CGSize size = [self sizeForDeviceOrientation];
     size.width = size.width * [UIScreen mainScreen].scale;
     size.height = size.height * [UIScreen mainScreen].scale;
     
@@ -149,14 +142,7 @@ static MMLayershots *_sharedInstance;
 }
 
 - (UIImage *)imageFromLayer:(CALayer *)layer {
-    CGSize size;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UIInterfaceOrientationIsPortrait(orientation))
-    {
-        size = [UIScreen mainScreen].bounds.size;
-    } else {
-        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
-    }
+    CGSize size = [self sizeForDeviceOrientation];
     
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -166,6 +152,19 @@ static MMLayershots *_sharedInstance;
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
+}
+
+- (CGSize)sizeForDeviceOrientation {
+    CGSize size;
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        size = [UIScreen mainScreen].bounds.size;
+    } else {
+        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    
+    return size;
 }
 
 @end
