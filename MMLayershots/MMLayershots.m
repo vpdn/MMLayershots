@@ -71,9 +71,17 @@ static MMLayershots *_sharedInstance;
 
 - (NSData *)psdRepresentationForScreen:(UIScreen *)screen {
     // Initial setup
-    CGSize size = [UIScreen mainScreen].bounds.size;
+    CGSize size;
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        size = [UIScreen mainScreen].bounds.size;
+    } else {
+        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
     size.width = size.width * [UIScreen mainScreen].scale;
     size.height = size.height * [UIScreen mainScreen].scale;
+    
     PSDWriter * psdWriter = [[PSDWriter alloc] initWithDocumentSize:size];
 
     NSArray *allWindows;
@@ -141,9 +149,20 @@ static MMLayershots *_sharedInstance;
 }
 
 - (UIImage *)imageFromLayer:(CALayer *)layer {
-    UIGraphicsBeginImageContextWithOptions(layer.bounds.size, NO, [UIScreen mainScreen].scale);
+    CGSize size;
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsPortrait(orientation))
+    {
+        size = layer.bounds.size;
+    } else {
+        size = CGSizeMake(layer.bounds.size.height, layer.bounds.size.width);
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [layer renderInContext:ctx];
+    
+    [layer.sublayers[0] renderInContext:ctx];
+    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
