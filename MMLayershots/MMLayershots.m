@@ -146,8 +146,8 @@ static MMLayershots *_sharedInstance;
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
 
-    // if interface is in landscape, apply transforms to context for layers that need transform
-    if (![self isInterfaceInPortrait] && CATransform3DIsIdentity(layer.transform)) {
+    // if interface is in landscape, apply transforms to context for layers not in the status bar
+    if (![self isInterfaceInPortrait] && ![layer.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
         CGContextTranslateCTM(ctx, 0, size.height);
         CGContextRotateCTM(ctx, -M_PI_2);
     }
