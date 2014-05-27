@@ -11,6 +11,7 @@
 #import "MMLayershots.h"
 
 @interface MMViewController()<MMLayershotsDelegate, MFMailComposeViewControllerDelegate>
+@property (nonatomic, strong) UIDocumentInteractionController *documentController;
 @end
 
 @implementation MMViewController
@@ -57,44 +58,34 @@
 
 #pragma mark - MMLayershotsDelegate
 
-- (CGFloat)shouldCreatePSDDataAfterDelay {
-    NSLog(@"Will start assembling psd in 3 seconds...");
-    return 3.0;
+- (MMLayershotsCreatePolicy)shouldCreateLayershotForScreen:(UIScreen *)screen {
+    MMLayershotsCreatePolicy policy = MMLayershotsCreateNeverPolicy;
+#if (DEBUG)
+    policy = MMLayershotsCreateOnUserRequestPolicy;
+#endif
+    return policy;
 }
 
-- (void)willCreatePSDDataForScreen:(UIScreen *)screen {
+- (void)willCreateLayershotForScreen:(UIScreen *)screen {
     NSLog(@"Creating psd now...");
+    
 }
 
-+ (NSString *)documentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return documentsDirectory;
-}
-
-- (void)didCreatePSDDataForScreen:(UIScreen *)screen data:(NSData *)data {
-#if TARGET_IPHONE_SIMULATOR
-    
-    NSString *dataPath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
-    [data writeToFile:dataPath atomically:NO];
-    NSLog(@"Saving psd to %@", dataPath);
-    
-#else
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailVC = [MFMailComposeViewController new];
-        [mailVC addAttachmentData:data mimeType:@"image/vnd.adobe.photoshop" fileName:@"layershots.psd"];
-        mailVC.mailComposeDelegate = self;
-        [self presentViewController:mailVC animated:YES completion:nil];
-    }
+- (void)didCreateLayershotForScreen:(UIScreen *)screen data:(NSData *)data {
+    NSString *filePath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
+    [data writeToFile:filePath atomically:NO];
+    NSLog(@"Saving psd to %@", filePath);
+#if (!TARGET_IPHONE_SIMULATOR)
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    self.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+    [self.documentController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
 #endif
 }
 
-
-#pragma mark - MFMailComposeViewControllerDelegate
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-    [self dismissViewControllerAnimated:YES completion:nil];
++ (NSString *)documentsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return documentsDirectory;
 }
 
 @end
