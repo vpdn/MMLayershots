@@ -128,7 +128,6 @@
 		7E9B1DFB192A6D2D003A3819 /* LayershotsDemo */ = {
 			isa = PBXGroup;
 			children = (
-				7E9B1E3D192A754E003A3819 /* Libraries */,
 				7E9B1E04192A6D2D003A3819 /* MMAppDelegate.h */,
 				7E9B1E05192A6D2D003A3819 /* MMAppDelegate.m */,
 				7E9B1E07192A6D2D003A3819 /* Main.storyboard */,
@@ -176,13 +175,6 @@
 				7E9B1E36192A6D65003A3819 /* PSDWriter.m */,
 			);
 			path = PSDWriter;
-			sourceTree = "<group>";
-		};
-		7E9B1E3D192A754E003A3819 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
