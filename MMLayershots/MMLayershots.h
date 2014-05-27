@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "UIScreen+MMLayershots.h"
 
 @protocol MMLayershotsDelegate;
 
