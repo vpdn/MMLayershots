@@ -71,7 +71,8 @@ static MMLayershots *_sharedInstance;
 
 - (NSData *)psdRepresentationForScreen:(UIScreen *)screen {
     // Initial setup
-    CGSize size = [self sizeForInterfaceOrientation];
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    CGSize size = [self sizeForInterfaceOrientation:orientation];
     size.width = size.width * [UIScreen mainScreen].scale;
     size.height = size.height * [UIScreen mainScreen].scale;
     
@@ -142,36 +143,48 @@ static MMLayershots *_sharedInstance;
 }
 
 - (UIImage *)imageFromLayer:(CALayer *)layer {
-    CGSize size = [self sizeForInterfaceOrientation];
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    UIGraphicsBeginImageContextWithOptions(layer.bounds.size, NO, [UIScreen mainScreen].scale);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-    // if interface is in landscape, apply transforms to context for layers not in the status bar
-    if (![self isInterfaceInPortrait] && ![layer.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
-        CGContextTranslateCTM(ctx, 0, size.height);
-        CGContextRotateCTM(ctx, -M_PI_2);
-    }
-    
     [layer renderInContext:ctx];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (!UIInterfaceOrientationIsPortrait(orientation) && ![layer.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
+        image = [self applyTransformsToImage:image forInterfaceOrientation:orientation];
+    }
+    
     return image;
 }
 
-- (CGSize)sizeForInterfaceOrientation {
+- (UIImage *)applyTransformsToImage:(UIImage *)image forInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    CGSize size = [self sizeForInterfaceOrientation:orientation];
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (orientation == UIInterfaceOrientationLandscapeRight) {
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextRotateCTM (context, -M_PI_2);
+    } else if (orientation == UIInterfaceOrientationLandscapeLeft) {
+        CGContextTranslateCTM(context, size.width, 0);
+        CGContextRotateCTM (context, M_PI_2);
+    }
+    
+    [image drawAtPoint:CGPointMake(0, 0)];
+    UIImage *transformedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return transformedImage;
+}
+
+- (CGSize)sizeForInterfaceOrientation:(UIInterfaceOrientation)orientation {
     CGSize size;
-    if ([self isInterfaceInPortrait]) {
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
         size = [UIScreen mainScreen].bounds.size;
     } else {
         size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
     }
     
     return size;
-}
-
-- (BOOL)isInterfaceInPortrait {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    return UIInterfaceOrientationIsPortrait(orientation);
 }
 
 @end
