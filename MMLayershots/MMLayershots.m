@@ -8,7 +8,7 @@
 
 #import "MMLayershots.h"
 #import "CALayer+MMLayershots.h"
-#import "PSDWriter.h"
+#import "SFPSDWriter.h"
 
 static MMLayershots *_sharedInstance;
 
@@ -162,7 +162,7 @@ static MMLayershots *_sharedInstance;
     size.width = size.width * screen.scale;
     size.height = size.height * screen.scale;
     
-    PSDWriter * psdWriter = [[PSDWriter alloc] initWithDocumentSize:size];
+    SFPSDWriter * psdWriter = [[SFPSDWriter alloc] initWithDocumentSize:size];
 
     NSArray *allWindows = [[UIApplication sharedApplication] windows];
     
