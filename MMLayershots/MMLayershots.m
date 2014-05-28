@@ -138,7 +138,7 @@ static MMLayershots *_sharedInstance;
     });
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     enum {
         NoButtonIndex = 0,
         YesButtonIndex
