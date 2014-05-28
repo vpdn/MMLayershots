@@ -70,7 +70,9 @@ There are two optional delegate methods, one called before (``willCreateLayersho
 }
 
 - (void)didCreateLayershotForScreen:(UIScreen *)screen data:(NSData *)data {
-    NSString *filePath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"layershots.psd"];
     [data writeToFile:filePath atomically:NO];
     NSLog(@"Saving psd to %@", filePath);
 }
@@ -92,7 +94,7 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 
 - (void)didRequestPSDCreationFromCurrentViewState {
     // simulate a screenshot notification
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
     });
 }
