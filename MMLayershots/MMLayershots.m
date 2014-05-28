@@ -157,9 +157,11 @@ static MMLayershots *_sharedInstance;
 
 - (NSData *)layershotForScreen:(UIScreen *)screen {
     // Initial setup
-    CGSize size = screen.bounds.size;
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    CGSize size = [self sizeForInterfaceOrientation:orientation];
     size.width = size.width * screen.scale;
     size.height = size.height * screen.scale;
+    
     PSDWriter * psdWriter = [[PSDWriter alloc] initWithDocumentSize:size];
 
     NSArray *allWindows = [[UIApplication sharedApplication] windows];
@@ -234,7 +236,43 @@ static MMLayershots *_sharedInstance;
     [layer renderInContext:ctx];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (!UIInterfaceOrientationIsPortrait(orientation) && ![layer.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
+        image = [self applyTransformsToImage:image forInterfaceOrientation:orientation];
+    }
+    
     return image;
+}
+
+- (UIImage *)applyTransformsToImage:(UIImage *)image forInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    CGSize size = [self sizeForInterfaceOrientation:orientation];
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (orientation == UIInterfaceOrientationLandscapeRight) {
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextRotateCTM (context, -M_PI_2);
+    } else if (orientation == UIInterfaceOrientationLandscapeLeft) {
+        CGContextTranslateCTM(context, size.width, 0);
+        CGContextRotateCTM (context, M_PI_2);
+    }
+    
+    [image drawAtPoint:CGPointMake(0, 0)];
+    UIImage *transformedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return transformedImage;
+}
+
+- (CGSize)sizeForInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    CGSize size;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        size = [UIScreen mainScreen].bounds.size;
+    } else {
+        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    
+    return size;
 }
 
 @end
