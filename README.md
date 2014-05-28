@@ -42,12 +42,8 @@ The preferred way to install is via Cocoapods. Add this to your Podfile:
 	
 	pod 'MMLayershots'
 
-*Note (20.05.2014): There's a problem with the spec I pushed yesterday to Cocoapods/Specs. Unfortunately this comes exactly at the time, where Cocoapods is transitioning to [Cocoapods Trunk][]. Pods are 'frozen' during the transitioning period (around a week), so I won't be able to push a fix to the official Cocoapods repository until then. For now, you'll need to reference the podspec in this repository directly (or download the files manually):*
 
-	pod 'MMLayershots', :podspec => 'https://raw.githubusercontent.com/vpdn/MMLayershots/master/MMLayershots.podspec'
-
-
-In the Application Delegate, initialize the MMLayershots shared instance:
+In the Application delegate, initialize the MMLayershots shared instance:
 
 ```objc
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -56,38 +52,31 @@ In the Application Delegate, initialize the MMLayershots shared instance:
 }
 ```
 
-then implement the delegate methods:
+There's only on then mandatory delegate method, that tells Layershots what to do when a screenshot is taken:
 
 ```objc
-- (CGFloat)shouldCreatePSDDataAfterDelay {
-	// set a delay, e.g. to show a notification before starting the capture.
-	// During the capture, the screen currently doesn't support showing any
-	// progress indication. Everything that is shown will just simply be rendered
-	// as well.
-	CGFloat delay = 3.0;
-    return delay;
-}
-
-- (void)willCreatePSDDataForScreen:(UIScreen *)screen {
-    //Creating psd now...
-}
-
-- (void)didCreatePSDDataForScreen:(UIScreen *)screen data:(NSData *)data {
-#if TARGET_IPHONE_SIMULATOR
-    [data writeToFile:@"/tmp/layershotsDemo.psd" atomically:NO];
-    NSLog(@"Saving psd to /tmp/layershotsDemo.psd");
-#else
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailVC = [MFMailComposeViewController new];
-        [mailVC addAttachmentData:data mimeType:@"image/vnd.adobe.photoshop" fileName:@"layershots.psd"];
-        mailVC.delegate = self;
-        [self presentViewController:mailVC animated:YES completion:nil];
-    }
-#endif
+- (MMLayershotsCreatePolicy)shouldCreateLayershotForScreen:(UIScreen *)screen {
+    return MMLayershotsCreateOnUserRequestPolicy;
 }
 ```
 
-The iPhone Simulator doesn't trigger the screenshot notification when a screenshot is saved. You can trigger it manually by assigning a custom shortcut. Add this in your root viewcontroller or anywhere else along the responder chain:
+Return ``MMLayershotsCreateNeverPolicy`` to disable Layershots, ``MMLayershotsCreateOnUserRequestPolicy`` to pass on the request to the user (popup) or ``MMLayershotsCreateNowPolicy`` to trigger the generation of a psd immediately.
+
+There are two optional delegate methods, one called before (``willCreateLayershotForScreen:``) and one after (``didCreateLayershotForScreen:data:``) the psd has been generated. Use the latter to save the data into a file or present 'Open in...' options to the user.
+
+```objc
+- (void)willCreateLayershotForScreen:(UIScreen *)screen {
+    NSLog(@"Creating psd now...");
+}
+
+- (void)didCreateLayershotForScreen:(UIScreen *)screen data:(NSData *)data {
+    NSString *filePath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
+    [data writeToFile:filePath atomically:NO];
+    NSLog(@"Saving psd to %@", filePath);
+}
+```
+
+The iPhone Simulator doesn't trigger the screenshot notification when a screenshot is saved. However, you can easily trigger it manually by assigning a custom shortcut. To do so, add the following code to your root viewcontroller or anywhere else along the responder chain:
 
 ```objc
 #if TARGET_IPHONE_SIMULATOR
@@ -96,7 +85,7 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 }
 
 - (NSArray *)keyCommands {
-	// save
+	// save on ⇧⌘+S
     UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:UIKeyModifierCommand|UIKeyModifierShift action:@selector(didRequestPSDCreationFromCurrentViewState)];
     return @[command];
 }
