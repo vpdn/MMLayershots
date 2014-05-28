@@ -179,29 +179,23 @@ static MMLayershots *_sharedInstance;
     allWindows = [allWindows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"screen == %@ AND self != %@", screen, self.hudWindow]];
 
     for (UIWindow *window in allWindows) {
-        NSMutableArray *layerImages = [NSMutableArray new];
         [window.layer beginHidingSublayers];
-        [layerImages addObjectsFromArray:[self buildImagesForLayer:window.layer renderedToRootLayer:window.layer]];
+        [self addImagesForLayer:window.layer renderedToRootLayer:window.layer psdWriter:psdWriter];
         [window.layer endHidingSublayers];
-
-        for (UIImage *layerImage in layerImages) {
-            // Currently all layers are named "Layer".
-            // See https://github.com/vpdn/MMLayershots/issues/2 for improvement suggestions.
-            [psdWriter addLayerWithCGImage:layerImage.CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
-        }
     }
     NSData *psdData = [psdWriter createPSDData];
     return psdData;
 }
 
-- (NSArray *)buildImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer {
-    NSMutableArray *images = [NSMutableArray new];
+// Currently all layers are named "Layer".
+// See https://github.com/vpdn/MMLayershots/issues/2 for improvement suggestions.
+- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer psdWriter:(SFPSDWriter *)psdWriter {
     if (layer.hiddenBeforeHidingSublayers==NO) {
         layer.hidden = NO;
         if (layer.sublayers.count>0) {
             // add self
-            [images addObject:[self imageFromLayer:rootLayer]];
-            
+            [psdWriter addLayerWithCGImage:[[self imageFromLayer:rootLayer] CGImage] andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
+
             // hide own layer visuals while rendering children
             CGColorRef layerBgColor = layer.backgroundColor;
             layer.backgroundColor = [UIColor clearColor].CGColor;
@@ -209,22 +203,28 @@ static MMLayershots *_sharedInstance;
             layer.borderColor = [UIColor clearColor].CGColor;
             CGColorRef layerShadowColor = layer.shadowColor;
             layer.shadowColor = [UIColor clearColor].CGColor;
-            
+
+            // create layer group
+            [psdWriter openGroupLayerWithName:@"Group"];
+
+            // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                [images addObjectsFromArray:[self buildImagesForLayer:obj renderedToRootLayer:rootLayer]];
+                [self addImagesForLayer:obj renderedToRootLayer:rootLayer psdWriter:psdWriter];
             }];
-            
+
+            // close layer group
+            [psdWriter closeCurrentGroupLayer];
+
             // reset layer colors
             layer.borderColor = layerBorderColor;
             layer.backgroundColor = layerBgColor;
             layer.shadowColor = layerShadowColor;
         } else {
             // base case
-            [images addObject:[self imageFromLayer:rootLayer]];
+            [psdWriter addLayerWithCGImage:[[self imageFromLayer:rootLayer] CGImage] andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
         }
         layer.hidden = YES;
     }
-    return images;
 }
 
 - (UIImage *)imageFromLayer:(CALayer *)layer {
