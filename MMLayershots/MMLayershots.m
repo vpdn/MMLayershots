@@ -159,8 +159,8 @@ static MMLayershots *_sharedInstance;
     // Initial setup
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGSize size = [self sizeForInterfaceOrientation:orientation];
-    size.width = size.width * [UIScreen mainScreen].scale;
-    size.height = size.height * [UIScreen mainScreen].scale;
+    size.width = size.width * screen.scale;
+    size.height = size.height * screen.scale;
     
     PSDWriter * psdWriter = [[PSDWriter alloc] initWithDocumentSize:size];
 
