@@ -49,10 +49,8 @@
     [box addSubview:box2];
     
 #if TARGET_IPHONE_SIMULATOR
-    // simulate a screenshot notification
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
-    });
+    [[[UIAlertView alloc] initWithTitle:@"Note" message:@"The simulator doesn't trigger screenshot notifications when a screenshot is saved. Use ⇧⌘+S to trigger a simulated screenshot notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+;
 #endif
 }
 
@@ -75,7 +73,9 @@
     NSString *filePath = [[[self class] documentsDirectory] stringByAppendingPathComponent:@"layershots.psd"];
     [data writeToFile:filePath atomically:NO];
     NSLog(@"Saving psd to %@", filePath);
-#if (!TARGET_IPHONE_SIMULATOR)
+#if (TARGET_IPHONE_SIMULATOR)
+    [[[UIAlertView alloc] initWithTitle:@"Done" message:@"File has been generated and saved. See log output for location." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#else
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     self.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
     [self.documentController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
@@ -84,8 +84,31 @@
 
 + (NSString *)documentsDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [paths firstObject];
+    NSAssert(documentsDirectory!=nil, @"Can't determine document directory");
     return documentsDirectory;
 }
+
+
+#pragma mark - Simulate screenshots in simulator
+
+#if TARGET_IPHONE_SIMULATOR
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (NSArray *)keyCommands {
+    // save on ⇧⌘+S
+    UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:UIKeyModifierCommand|UIKeyModifierShift action:@selector(didRequestPSDCreationFromCurrentViewState)];
+    return @[command];
+}
+
+- (void)didRequestPSDCreationFromCurrentViewState {
+    // simulate a screenshot notification
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
+    });
+}
+#endif
 
 @end
