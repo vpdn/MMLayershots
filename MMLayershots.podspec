@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name          = "MMLayershots"
-  s.version       = "0.2.1"
+  s.version       = "0.2.2"
   s.summary       = "Generates a Photoshop (PSD) file from your app view hierachy."
   s.homepage      = "https://github.com/vpdn/MMLayershots/"
   s.license       = 'MIT'
