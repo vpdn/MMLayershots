@@ -104,7 +104,7 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 - The generated psd file is currently bigger than it needs to be. There isn't any bounds calculation in yet, so every layer is rendered in full screen.
 - Layers are currently not grouped and all named "Layer".
 - The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. I've only tested it with [Clockshots][] so far. If things don't look quite right, you can always fall back onto the screenshot (png). But also file an issue and submit a pull request, that way everyone benefits.
-- Currently Layershots only supports portrait mode.
+- <strike>Currently Layershots only supports portrait mode. (Issue #5)</strike> *Added by @jwalapr*
 
 For a list of outstanding / missing features, check out the [next up page](https://github.com/vpdn/MMLayershots/wiki). Would be awesome if you could help out!
 
