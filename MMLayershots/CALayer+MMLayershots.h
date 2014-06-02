@@ -17,4 +17,6 @@
 - (void)beginHidingSublayers;
 - (void)endHidingSublayers;
 
+- (UIImage *)imageRepresentation;
+
 @end

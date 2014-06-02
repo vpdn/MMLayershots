@@ -21,11 +21,19 @@
 		7E9B1E17192A6D2D003A3819 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B1DF9192A6D2D003A3819 /* UIKit.framework */; };
 		7E9B1E37192A6D65003A3819 /* CALayer+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E2C192A6D65003A3819 /* CALayer+MMLayershots.m */; };
 		7E9B1E38192A6D65003A3819 /* MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E2E192A6D65003A3819 /* MMLayershots.m */; };
-		7E9B1E39192A6D65003A3819 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E9B1E30192A6D65003A3819 /* LICENSE.txt */; };
-		7E9B1E3A192A6D65003A3819 /* NSDataPSDAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E32192A6D65003A3819 /* NSDataPSDAdditions.m */; };
-		7E9B1E3B192A6D65003A3819 /* PSDLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E34192A6D65003A3819 /* PSDLayer.m */; };
-		7E9B1E3C192A6D65003A3819 /* PSDWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E36192A6D65003A3819 /* PSDWriter.m */; };
 		7E9B1E45192A7C16003A3819 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B1E44192A7C16003A3819 /* MessageUI.framework */; };
+		7EC97372193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */; };
+		7EC97375193CABE800E6ABD8 /* UIScreen+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC97374193CABE800E6ABD8 /* UIScreen+MMLayershots.m */; };
+		A60BAB3C1936229D00125E70 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = A60BAB3B1936229D00125E70 /* LICENSE.txt */; };
+		A60BAB52193622AE00125E70 /* SFPSDLayerBlendModes.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB40193622AE00125E70 /* SFPSDLayerBlendModes.m */; };
+		A60BAB53193622AE00125E70 /* SFPSDGroupClosingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB42193622AE00125E70 /* SFPSDGroupClosingLayer.m */; };
+		A60BAB54193622AE00125E70 /* SFPSDGroupLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB44193622AE00125E70 /* SFPSDGroupLayer.m */; };
+		A60BAB55193622AE00125E70 /* SFPSDGroupOpeningLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB46193622AE00125E70 /* SFPSDGroupOpeningLayer.m */; };
+		A60BAB56193622AE00125E70 /* SFPSDLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB48193622AE00125E70 /* SFPSDLayer.m */; };
+		A60BAB57193622AE00125E70 /* NSData+SFPackedBits.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB4B193622AE00125E70 /* NSData+SFPackedBits.m */; };
+		A60BAB58193622AE00125E70 /* NSMutableData+SFAppendValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB4D193622AE00125E70 /* NSMutableData+SFAppendValue.m */; };
+		A60BAB59193622AE00125E70 /* NSString+SFPascalString.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB4F193622AE00125E70 /* NSString+SFPascalString.m */; };
+		A60BAB5A193622AE00125E70 /* SFPSDWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BAB51193622AE00125E70 /* SFPSDWriter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,14 +67,30 @@
 		7E9B1E2C192A6D65003A3819 /* CALayer+MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+MMLayershots.m"; sourceTree = "<group>"; };
 		7E9B1E2D192A6D65003A3819 /* MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMLayershots.h; sourceTree = "<group>"; };
 		7E9B1E2E192A6D65003A3819 /* MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLayershots.m; sourceTree = "<group>"; };
-		7E9B1E30192A6D65003A3819 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		7E9B1E31192A6D65003A3819 /* NSDataPSDAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataPSDAdditions.h; sourceTree = "<group>"; };
-		7E9B1E32192A6D65003A3819 /* NSDataPSDAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataPSDAdditions.m; sourceTree = "<group>"; };
-		7E9B1E33192A6D65003A3819 /* PSDLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDLayer.h; sourceTree = "<group>"; };
-		7E9B1E34192A6D65003A3819 /* PSDLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDLayer.m; sourceTree = "<group>"; };
-		7E9B1E35192A6D65003A3819 /* PSDWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSDWriter.h; sourceTree = "<group>"; };
-		7E9B1E36192A6D65003A3819 /* PSDWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSDWriter.m; sourceTree = "<group>"; };
 		7E9B1E44192A7C16003A3819 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		7EC97370193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SFPSDWriter+MMLayershots.h"; sourceTree = "<group>"; };
+		7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SFPSDWriter+MMLayershots.m"; sourceTree = "<group>"; };
+		7EC97373193CABE800E6ABD8 /* UIScreen+MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+MMLayershots.h"; sourceTree = "<group>"; };
+		7EC97374193CABE800E6ABD8 /* UIScreen+MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+MMLayershots.m"; sourceTree = "<group>"; };
+		A60BAB3B1936229D00125E70 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = SFPSDWriter/LICENSE.txt; sourceTree = "<group>"; };
+		A60BAB3F193622AE00125E70 /* SFPSDLayerBlendModes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPSDLayerBlendModes.h; sourceTree = "<group>"; };
+		A60BAB40193622AE00125E70 /* SFPSDLayerBlendModes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPSDLayerBlendModes.m; sourceTree = "<group>"; };
+		A60BAB41193622AE00125E70 /* SFPSDGroupClosingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPSDGroupClosingLayer.h; sourceTree = "<group>"; };
+		A60BAB42193622AE00125E70 /* SFPSDGroupClosingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPSDGroupClosingLayer.m; sourceTree = "<group>"; };
+		A60BAB43193622AE00125E70 /* SFPSDGroupLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPSDGroupLayer.h; sourceTree = "<group>"; };
+		A60BAB44193622AE00125E70 /* SFPSDGroupLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPSDGroupLayer.m; sourceTree = "<group>"; };
+		A60BAB45193622AE00125E70 /* SFPSDGroupOpeningLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPSDGroupOpeningLayer.h; sourceTree = "<group>"; };
+		A60BAB46193622AE00125E70 /* SFPSDGroupOpeningLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPSDGroupOpeningLayer.m; sourceTree = "<group>"; };
+		A60BAB47193622AE00125E70 /* SFPSDLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPSDLayer.h; sourceTree = "<group>"; };
+		A60BAB48193622AE00125E70 /* SFPSDLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPSDLayer.m; sourceTree = "<group>"; };
+		A60BAB4A193622AE00125E70 /* NSData+SFPackedBits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SFPackedBits.h"; sourceTree = "<group>"; };
+		A60BAB4B193622AE00125E70 /* NSData+SFPackedBits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SFPackedBits.m"; sourceTree = "<group>"; };
+		A60BAB4C193622AE00125E70 /* NSMutableData+SFAppendValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+SFAppendValue.h"; sourceTree = "<group>"; };
+		A60BAB4D193622AE00125E70 /* NSMutableData+SFAppendValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+SFAppendValue.m"; sourceTree = "<group>"; };
+		A60BAB4E193622AE00125E70 /* NSString+SFPascalString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SFPascalString.h"; sourceTree = "<group>"; };
+		A60BAB4F193622AE00125E70 /* NSString+SFPascalString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SFPascalString.m"; sourceTree = "<group>"; };
+		A60BAB50193622AE00125E70 /* SFPSDWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFPSDWriter.h; path = SFPSDWriter/Library/SFPSDWriter/SFPSDWriter.h; sourceTree = "<group>"; };
+		A60BAB51193622AE00125E70 /* SFPSDWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFPSDWriter.m; path = SFPSDWriter/Library/SFPSDWriter/SFPSDWriter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,28 +177,70 @@
 		7E9B1E2A192A6D65003A3819 /* MMLayershots */ = {
 			isa = PBXGroup;
 			children = (
+				7EC97373193CABE800E6ABD8 /* UIScreen+MMLayershots.h */,
+				7EC97374193CABE800E6ABD8 /* UIScreen+MMLayershots.m */,
 				7E9B1E2B192A6D65003A3819 /* CALayer+MMLayershots.h */,
 				7E9B1E2C192A6D65003A3819 /* CALayer+MMLayershots.m */,
+				7EC97370193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.h */,
+				7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */,
 				7E9B1E2D192A6D65003A3819 /* MMLayershots.h */,
 				7E9B1E2E192A6D65003A3819 /* MMLayershots.m */,
-				7E9B1E2F192A6D65003A3819 /* PSDWriter */,
+				A60BAB3A1936229000125E70 /* SFPSDWriter */,
 			);
 			name = MMLayershots;
 			path = ../MMLayershots;
 			sourceTree = "<group>";
 		};
-		7E9B1E2F192A6D65003A3819 /* PSDWriter */ = {
+		A60BAB3A1936229000125E70 /* SFPSDWriter */ = {
 			isa = PBXGroup;
 			children = (
-				7E9B1E30192A6D65003A3819 /* LICENSE.txt */,
-				7E9B1E31192A6D65003A3819 /* NSDataPSDAdditions.h */,
-				7E9B1E32192A6D65003A3819 /* NSDataPSDAdditions.m */,
-				7E9B1E33192A6D65003A3819 /* PSDLayer.h */,
-				7E9B1E34192A6D65003A3819 /* PSDLayer.m */,
-				7E9B1E35192A6D65003A3819 /* PSDWriter.h */,
-				7E9B1E36192A6D65003A3819 /* PSDWriter.m */,
+				A60BAB3B1936229D00125E70 /* LICENSE.txt */,
+				A60BAB3D193622AE00125E70 /* Layer Classes */,
+				A60BAB49193622AE00125E70 /* Categories */,
+				A60BAB50193622AE00125E70 /* SFPSDWriter.h */,
+				A60BAB51193622AE00125E70 /* SFPSDWriter.m */,
 			);
-			path = PSDWriter;
+			name = SFPSDWriter;
+			sourceTree = "<group>";
+		};
+		A60BAB3D193622AE00125E70 /* Layer Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A60BAB3E193622AE00125E70 /* Constants */,
+				A60BAB41193622AE00125E70 /* SFPSDGroupClosingLayer.h */,
+				A60BAB42193622AE00125E70 /* SFPSDGroupClosingLayer.m */,
+				A60BAB43193622AE00125E70 /* SFPSDGroupLayer.h */,
+				A60BAB44193622AE00125E70 /* SFPSDGroupLayer.m */,
+				A60BAB45193622AE00125E70 /* SFPSDGroupOpeningLayer.h */,
+				A60BAB46193622AE00125E70 /* SFPSDGroupOpeningLayer.m */,
+				A60BAB47193622AE00125E70 /* SFPSDLayer.h */,
+				A60BAB48193622AE00125E70 /* SFPSDLayer.m */,
+			);
+			name = "Layer Classes";
+			path = "SFPSDWriter/Library/SFPSDWriter/Layer Classes";
+			sourceTree = "<group>";
+		};
+		A60BAB3E193622AE00125E70 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				A60BAB3F193622AE00125E70 /* SFPSDLayerBlendModes.h */,
+				A60BAB40193622AE00125E70 /* SFPSDLayerBlendModes.m */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		A60BAB49193622AE00125E70 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A60BAB4A193622AE00125E70 /* NSData+SFPackedBits.h */,
+				A60BAB4B193622AE00125E70 /* NSData+SFPackedBits.m */,
+				A60BAB4C193622AE00125E70 /* NSMutableData+SFAppendValue.h */,
+				A60BAB4D193622AE00125E70 /* NSMutableData+SFAppendValue.m */,
+				A60BAB4E193622AE00125E70 /* NSString+SFPascalString.h */,
+				A60BAB4F193622AE00125E70 /* NSString+SFPascalString.m */,
+			);
+			name = Categories;
+			path = SFPSDWriter/Library/SFPSDWriter/Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,7 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E9B1E39192A6D65003A3819 /* LICENSE.txt in Resources */,
+				A60BAB3C1936229D00125E70 /* LICENSE.txt in Resources */,
 				7E9B1E0E192A6D2D003A3819 /* Images.xcassets in Resources */,
 				7E9B1E00192A6D2D003A3819 /* InfoPlist.strings in Resources */,
 				7E9B1E09192A6D2D003A3819 /* Main.storyboard in Resources */,
@@ -275,14 +341,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E9B1E3A192A6D65003A3819 /* NSDataPSDAdditions.m in Sources */,
-				7E9B1E3B192A6D65003A3819 /* PSDLayer.m in Sources */,
-				7E9B1E3C192A6D65003A3819 /* PSDWriter.m in Sources */,
+				7EC97372193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m in Sources */,
 				7E9B1E06192A6D2D003A3819 /* MMAppDelegate.m in Sources */,
+				A60BAB53193622AE00125E70 /* SFPSDGroupClosingLayer.m in Sources */,
+				7EC97375193CABE800E6ABD8 /* UIScreen+MMLayershots.m in Sources */,
+				A60BAB58193622AE00125E70 /* NSMutableData+SFAppendValue.m in Sources */,
+				A60BAB59193622AE00125E70 /* NSString+SFPascalString.m in Sources */,
 				7E9B1E37192A6D65003A3819 /* CALayer+MMLayershots.m in Sources */,
 				7E9B1E0C192A6D2D003A3819 /* MMViewController.m in Sources */,
+				A60BAB55193622AE00125E70 /* SFPSDGroupOpeningLayer.m in Sources */,
+				A60BAB52193622AE00125E70 /* SFPSDLayerBlendModes.m in Sources */,
+				A60BAB56193622AE00125E70 /* SFPSDLayer.m in Sources */,
+				A60BAB57193622AE00125E70 /* NSData+SFPackedBits.m in Sources */,
 				7E9B1E02192A6D2D003A3819 /* main.m in Sources */,
+				A60BAB54193622AE00125E70 /* SFPSDGroupLayer.m in Sources */,
 				7E9B1E38192A6D65003A3819 /* MMLayershots.m in Sources */,
+				A60BAB5A193622AE00125E70 /* SFPSDWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
