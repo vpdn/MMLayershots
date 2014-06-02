@@ -7,8 +7,10 @@
 //
 
 #import "MMLayershots.h"
-#import "CALayer+MMLayershots.h"
 #import "SFPSDWriter.h"
+#import "CALayer+MMLayershots.h"
+#import "UIScreen+MMLayershots.h"
+#import "SFPSDWriter+MMLayershots.h"
 
 static MMLayershots *_sharedInstance;
 
@@ -158,7 +160,7 @@ static MMLayershots *_sharedInstance;
 - (NSData *)layershotForScreen:(UIScreen *)screen {
     // Initial setup
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGSize size = [self sizeForInterfaceOrientation:orientation];
+    CGSize size = [screen sizeForInterfaceOrientation:orientation];
     size.width = size.width * screen.scale;
     size.height = size.height * screen.scale;
     
@@ -180,99 +182,11 @@ static MMLayershots *_sharedInstance;
 
     for (UIWindow *window in allWindows) {
         [window.layer beginHidingSublayers];
-        [self addImagesForLayer:window.layer renderedToRootLayer:window.layer psdWriter:psdWriter];
+        [psdWriter addImagesForLayer:window.layer renderedToRootLayer:window.layer];
         [window.layer endHidingSublayers];
     }
     NSData *psdData = [psdWriter createPSDData];
     return psdData;
-}
-
-// Currently all layers are named "Layer".
-// See https://github.com/vpdn/MMLayershots/issues/2 for improvement suggestions.
-- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer psdWriter:(SFPSDWriter *)psdWriter {
-    if (layer.hiddenBeforeHidingSublayers==NO) {
-        layer.hidden = NO;
-        if (layer.sublayers.count>0) {
-            // add self
-            [psdWriter addLayerWithCGImage:[[self imageFromLayer:rootLayer] CGImage] andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
-
-            // hide own layer visuals while rendering children
-            CGColorRef layerBgColor = layer.backgroundColor;
-            layer.backgroundColor = [UIColor clearColor].CGColor;
-            CGColorRef layerBorderColor = layer.borderColor;
-            layer.borderColor = [UIColor clearColor].CGColor;
-            CGColorRef layerShadowColor = layer.shadowColor;
-            layer.shadowColor = [UIColor clearColor].CGColor;
-
-            // create layer group
-            [psdWriter openGroupLayerWithName:@"Group"];
-
-            // render children
-            [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                [self addImagesForLayer:obj renderedToRootLayer:rootLayer psdWriter:psdWriter];
-            }];
-
-            // close layer group
-            [psdWriter closeCurrentGroupLayer];
-
-            // reset layer colors
-            layer.borderColor = layerBorderColor;
-            layer.backgroundColor = layerBgColor;
-            layer.shadowColor = layerShadowColor;
-        } else {
-            // base case
-            [psdWriter addLayerWithCGImage:[[self imageFromLayer:rootLayer] CGImage] andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
-        }
-        layer.hidden = YES;
-    }
-}
-
-- (UIImage *)imageFromLayer:(CALayer *)layer {
-    if ([[UIScreen screens] count]>1) {
-        NSLog(@"Warning: For multiple screens, the scale of the main screen is currently used.");
-    }
-    UIGraphicsBeginImageContextWithOptions(layer.bounds.size, NO, [self defaultScreen].scale);
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [layer renderInContext:ctx];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (!UIInterfaceOrientationIsPortrait(orientation) && ![layer.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
-        image = [self applyTransformsToImage:image forInterfaceOrientation:orientation];
-    }
-    
-    return image;
-}
-
-- (UIImage *)applyTransformsToImage:(UIImage *)image forInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    CGSize size = [self sizeForInterfaceOrientation:orientation];
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if (orientation == UIInterfaceOrientationLandscapeRight) {
-        CGContextTranslateCTM(context, 0, size.height);
-        CGContextRotateCTM (context, -M_PI_2);
-    } else if (orientation == UIInterfaceOrientationLandscapeLeft) {
-        CGContextTranslateCTM(context, size.width, 0);
-        CGContextRotateCTM (context, M_PI_2);
-    }
-    
-    [image drawAtPoint:CGPointMake(0, 0)];
-    UIImage *transformedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return transformedImage;
-}
-
-- (CGSize)sizeForInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    CGSize size;
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        size = [UIScreen mainScreen].bounds.size;
-    } else {
-        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
-    }
-    
-    return size;
 }
 
 @end

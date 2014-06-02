@@ -45,4 +45,56 @@ static char kAssociatedObjectHiddenState;
     return [hidden boolValue];
 }
 
+- (UIImage *)imageRepresentation {
+    if ([[UIScreen screens] count]>1) {
+        NSLog(@"Warning: For multiple screens, the scale of the main screen is currently used.");
+    }
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    [self renderInContext:ctx];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (!UIInterfaceOrientationIsPortrait(orientation) && ![self.delegate isKindOfClass:NSClassFromString(@"UIStatusBarWindow")]) {
+        image = [self applyTransformsToImage:image forInterfaceOrientation:orientation];
+    }
+    
+    return image;
+}
+
+
+#pragma mark - Helper
+
+- (UIImage *)applyTransformsToImage:(UIImage *)image forInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    CGSize size = [self sizeForInterfaceOrientation:orientation];
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (orientation == UIInterfaceOrientationLandscapeRight) {
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextRotateCTM (context, -M_PI_2);
+    } else if (orientation == UIInterfaceOrientationLandscapeLeft) {
+        CGContextTranslateCTM(context, size.width, 0);
+        CGContextRotateCTM (context, M_PI_2);
+    }
+    
+    [image drawAtPoint:CGPointMake(0, 0)];
+    UIImage *transformedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return transformedImage;
+}
+
+
+- (CGSize)sizeForInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    CGSize size;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        size = [UIScreen mainScreen].bounds.size;
+    } else {
+        size = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    
+    return size;
+}
+
 @end
