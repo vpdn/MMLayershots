@@ -28,12 +28,23 @@ Framer.js is one of the best tools we currently have out there to quickly protot
 
 ![framer.js sample][]
 
-For more infos, watch [Koen present the framework](http://vimeo.com/74712901) and make sure to [check out the examples](http://examples.framerjs.com/#Google Now - Overview.framer) on their website too.
+For more info, watch [Koen present the framework](http://vimeo.com/74712901) and make sure to [check out the examples](http://examples.framerjs.com/#Google Now - Overview.framer) on their website too.
 
 
 ##Designer's Preamble
 
 If you are a designer who doesn't write code yourself, the next few sections might look to you like a message written by E.T.'s parents to guide him home. Rest assured, it's pretty simple to plug Layershots into your app and whoever you're developing your app with, can get it integrated with just a few lines of code. If there are questions, feel free to ping me up on twitter ([@vpdn](http://twitter.com/vpdn)) and I'm glad to help out if I can.
+
+
+##Sample project
+
+The sample project links to the SFPSDWriter library via a git submodule. To run the sample, first clone the project.
+
+    git clone https://github.com/vpdn/MMLayershots.git
+
+The run the following command to initialize the submodule:
+
+    git submodule update --init --recursive
 
 
 ##How to use Layershots?
@@ -66,7 +77,7 @@ There are two optional delegate methods, one called before (``willCreateLayersho
 
 ```objc
 - (void)willCreateLayershotForScreen:(UIScreen *)screen {
-    NSLog(@"Creating psd now...");
+    NSLog(@"Creating psd now..."); // you could hide away stuff such as user info, that you don't want to be in the psd
 }
 
 - (void)didCreateLayershotForScreen:(UIScreen *)screen data:(NSData *)data {
@@ -101,19 +112,21 @@ The iPhone Simulator doesn't trigger the screenshot notification when a screensh
 #endif
 ```
 
-
-##Notes/Contribute
+##Notes
 - The generated psd file is currently bigger than it needs to be. There isn't any bounds calculation in yet, so every layer is rendered in full screen. ([Issue #1](https://github.com/vpdn/MMLayershots/issues/1))
-- Layers are currently not grouped and all named "Layer". ([Issue #2](https://github.com/vpdn/MMLayershots/issues/2))
-- The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. I've only tested it with [Clockshots][] so far. If things don't look quite right, you can always fall back onto the screenshot (png). But also file an issue and submit a pull request, that way everyone benefits.
-- <strike>Currently Layershots only supports portrait mode. ([Issue #5](https://github.com/vpdn/MMLayershots/issues/5))</strike> *✓ Added by [@jwalapr](http://twitter.com/jwalapr)*
+- <strike>Layers are currently not grouped</strike>
+- Layer are all named "Layer". ([Issue #2](https://github.com/vpdn/MMLayershots/issues/2))
+- The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. Test suite upcoming. ([Issue #8](https://github.com/vpdn/MMLayershots/issues/8))
+- <strike>Currently Layershots only supports portrait mode. ([Issue #5](https://github.com/vpdn/MMLayershots/issues/5))</strike>
 
 For a list of outstanding / missing features, check out the [next up page](https://github.com/vpdn/MMLayershots/wiki). Would be awesome if you could help out!
 
 
-##Thanks
-- Layershots uses Ben Gotow's PSDWriter implementation to write out the psd files, author of the awesome [Spark Inspector](http://sparkinspector.com).
-- The first implementation was born during the [UIKonf](http://uikonf.com) Hackathon and written up by [@ndfred](http://twitter.com/ndfred).
+##Thanks :star2:
+- Layershots uses [SFPSDWriter](https://github.com/shinyfrog/SFPSDWriter) by [@shinyfrog]( https://github.com/shinyfrog), a psd generation library with layer groups support, based on [@bengotow](https://github.com/bengotow)'s [PSDWriter](https://github.com/bengotow/PSDWriter).
+- Layer group support was added by [@ashikase](https://github.com/ashikase).
+- Support for landscape mode was added by [@jwalapr](https://github.com/jwalapr).
+- The [first implementation](https://github.com/ndfred/Snapshot) of the idea was built during the [UIKonf](http://uikonf.com) Hackathon and written up by [@ndfred](http://twitter.com/ndfred).
 
 [color animation]: http://vpdn.github.io/images/2014-05-18_Layershots/clockshots_color_variation.gif
 [icon animation]: http://vpdn.github.io/images/2014-05-18_Layershots/clockshots_icons_variation.gif
