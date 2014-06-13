@@ -18,15 +18,24 @@
         layer.hidden = NO;
         if (layer.sublayers.count>0) {
             // add self
-            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
+            UIImage *image = [rootLayer imageRepresentation];
+            [self addLayerWithCGImage:image.CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
             
             // hide own layer visuals while rendering children
-            CGColorRef layerBgColor = layer.backgroundColor;
-            layer.backgroundColor = [UIColor clearColor].CGColor;
-            CGColorRef layerBorderColor = layer.borderColor;
-            layer.borderColor = [UIColor clearColor].CGColor;
-            CGColorRef layerShadowColor = layer.shadowColor;
-            layer.shadowColor = [UIColor clearColor].CGColor;
+            NSMutableDictionary *layerProperties = [NSMutableDictionary new];
+            
+            if (layer.backgroundColor) {
+                layerProperties[@"backgroundColor"] = (__bridge id)(layer.backgroundColor);
+                layer.backgroundColor = nil;
+            }
+            if (layer.borderColor) {
+                layerProperties[@"borderColor"] = (__bridge id)(layer.borderColor);
+                layer.borderColor = nil;
+            }
+            if (layer.shadowColor) {
+                layerProperties[@"shadowColor"] = (__bridge id)(layer.shadowColor);
+                layer.shadowColor = nil;
+            }
             
             // create layer group
             [self openGroupLayerWithName:@"Group"];
@@ -34,15 +43,20 @@
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [self addImagesForLayer:obj renderedToRootLayer:rootLayer];
+                NSLog(@"|");
             }];
             
-            // close layer group
-            [self closeCurrentGroupLayer];
-            
             // reset layer colors
-            layer.borderColor = layerBorderColor;
-            layer.backgroundColor = layerBgColor;
-            layer.shadowColor = layerShadowColor;
+            for (NSString *layerProperty in layerProperties) {
+                [layer setValue:layerProperties[layerProperty] forKey:layerProperty];
+            }
+            
+            // close layer group
+            NSError *error = nil;
+            [self closeCurrentGroupLayerWithError:&error];
+            if (error) {
+                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
+            }
         } else {
             // base case
             [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
