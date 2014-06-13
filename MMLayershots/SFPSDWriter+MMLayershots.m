@@ -37,13 +37,12 @@
                 layer.shadowColor = nil;
             }
             
-            // create layer group
-            [self openGroupLayerWithName:@"Group"];
+//            // create layer group
+//            [self openGroupLayerWithName:@"Group"];
             
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [self addImagesForLayer:obj renderedToRootLayer:rootLayer];
-                NSLog(@"|");
             }];
             
             // reset layer colors
@@ -52,11 +51,11 @@
             }
             
             // close layer group
-            NSError *error = nil;
-            [self closeCurrentGroupLayerWithError:&error];
-            if (error) {
-                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
-            }
+//            NSError *error = nil;
+//            [self closeCurrentGroupLayerWithError:&error];
+//            if (error) {
+//                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
+//            }
         } else {
             // base case
             [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
