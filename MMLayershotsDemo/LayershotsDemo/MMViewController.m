@@ -89,26 +89,4 @@
     return documentsDirectory;
 }
 
-
-#pragma mark - Simulate screenshots in simulator
-
-#if TARGET_IPHONE_SIMULATOR
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (NSArray *)keyCommands {
-    // save on ⇧⌘+S
-    UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:UIKeyModifierCommand|UIKeyModifierShift action:@selector(didRequestPSDCreationFromCurrentViewState)];
-    return @[command];
-}
-
-- (void)didRequestPSDCreationFromCurrentViewState {
-    // simulate a screenshot notification
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
-    });
-}
-#endif
-
 @end

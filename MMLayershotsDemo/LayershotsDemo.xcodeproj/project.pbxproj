@@ -22,6 +22,7 @@
 		7E9B1E37192A6D65003A3819 /* CALayer+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E2C192A6D65003A3819 /* CALayer+MMLayershots.m */; };
 		7E9B1E38192A6D65003A3819 /* MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B1E2E192A6D65003A3819 /* MMLayershots.m */; };
 		7E9B1E45192A7C16003A3819 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B1E44192A7C16003A3819 /* MessageUI.framework */; };
+		7EAB371F194F6B8100283F1E /* MMSimulatorKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB371E194F6B8100283F1E /* MMSimulatorKeyHandler.m */; };
 		7EC97372193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */; };
 		7EC97375193CABE800E6ABD8 /* UIScreen+MMLayershots.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC97374193CABE800E6ABD8 /* UIScreen+MMLayershots.m */; };
 		A60BAB3C1936229D00125E70 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = A60BAB3B1936229D00125E70 /* LICENSE.txt */; };
@@ -68,6 +69,8 @@
 		7E9B1E2D192A6D65003A3819 /* MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMLayershots.h; sourceTree = "<group>"; };
 		7E9B1E2E192A6D65003A3819 /* MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLayershots.m; sourceTree = "<group>"; };
 		7E9B1E44192A7C16003A3819 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		7EAB371D194F6B8100283F1E /* MMSimulatorKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSimulatorKeyHandler.h; sourceTree = "<group>"; };
+		7EAB371E194F6B8100283F1E /* MMSimulatorKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSimulatorKeyHandler.m; sourceTree = "<group>"; };
 		7EC97370193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SFPSDWriter+MMLayershots.h"; sourceTree = "<group>"; };
 		7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SFPSDWriter+MMLayershots.m"; sourceTree = "<group>"; };
 		7EC97373193CABE800E6ABD8 /* UIScreen+MMLayershots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+MMLayershots.h"; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 				7E9B1E2C192A6D65003A3819 /* CALayer+MMLayershots.m */,
 				7EC97370193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.h */,
 				7EC97371193CA66900E6ABD8 /* SFPSDWriter+MMLayershots.m */,
+				7EAB371D194F6B8100283F1E /* MMSimulatorKeyHandler.h */,
+				7EAB371E194F6B8100283F1E /* MMSimulatorKeyHandler.m */,
 				7E9B1E2D192A6D65003A3819 /* MMLayershots.h */,
 				7E9B1E2E192A6D65003A3819 /* MMLayershots.m */,
 				A60BAB3A1936229000125E70 /* SFPSDWriter */,
@@ -349,6 +354,7 @@
 				A60BAB59193622AE00125E70 /* NSString+SFPascalString.m in Sources */,
 				7E9B1E37192A6D65003A3819 /* CALayer+MMLayershots.m in Sources */,
 				7E9B1E0C192A6D2D003A3819 /* MMViewController.m in Sources */,
+				7EAB371F194F6B8100283F1E /* MMSimulatorKeyHandler.m in Sources */,
 				A60BAB55193622AE00125E70 /* SFPSDGroupOpeningLayer.m in Sources */,
 				A60BAB52193622AE00125E70 /* SFPSDLayerBlendModes.m in Sources */,
 				A60BAB56193622AE00125E70 /* SFPSDLayer.m in Sources */,
