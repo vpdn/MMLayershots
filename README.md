@@ -89,32 +89,13 @@ There are two optional delegate methods, one called before (``willCreateLayersho
 }
 ```
 
-The iPhone Simulator doesn't trigger the screenshot notification when a screenshot is saved. However, you can easily trigger it manually by assigning a custom shortcut. To do so, add the following code to your root viewcontroller or anywhere else along the responder chain:
+## iPhone simulator
+The iPhone Simulator doesn't trigger a notification when a screenshot is saved ([rdar://17077229](http://openradar.appspot.com/17077229)). As a work around, use the key command ⇧⌘+S.
 
-```objc
-#if TARGET_IPHONE_SIMULATOR
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (NSArray *)keyCommands {
-	// save on ⇧⌘+S
-    UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:UIKeyModifierCommand|UIKeyModifierShift action:@selector(didRequestPSDCreationFromCurrentViewState)];
-    return @[command];
-}
-
-- (void)didRequestPSDCreationFromCurrentViewState {
-    // simulate a screenshot notification
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationUserDidTakeScreenshotNotification object:nil];
-    });
-}
-#endif
-```
 
 ##Notes
 - The generated psd file is currently bigger than it needs to be. There isn't any bounds calculation in yet, so every layer is rendered in full screen. ([Issue #1](https://github.com/vpdn/MMLayershots/issues/1))
-- <strike>Layers are currently not grouped</strike>
+- Layers are currently not grouped
 - Layer are all named "Layer". ([Issue #2](https://github.com/vpdn/MMLayershots/issues/2))
 - The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. Test suite upcoming. ([Issue #8](https://github.com/vpdn/MMLayershots/issues/8))
 - <strike>Currently Layershots only supports portrait mode. ([Issue #5](https://github.com/vpdn/MMLayershots/issues/5))</strike>
