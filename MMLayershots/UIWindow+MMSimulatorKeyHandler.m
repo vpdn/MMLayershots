@@ -1,6 +1,6 @@
 //
 //  UIWindow+MMSimulatorKeyHandler.m
-//  Pods
+//  MMLayershots
 //
 //  Created by Vinh Phuc Dinh on 17/06/14.
 //

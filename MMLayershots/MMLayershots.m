@@ -1,6 +1,6 @@
 //
 //  MMLayershots.m
-//  LayershotsDemo
+//  MMLayershots
 //
 //  Created by Vinh Phuc Dinh on 16/05/14.
 //  Copyright (c) 2014 Mocava Mobile. All rights reserved.
