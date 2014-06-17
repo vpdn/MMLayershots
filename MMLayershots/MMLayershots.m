@@ -11,7 +11,7 @@
 #import "CALayer+MMLayershots.h"
 #import "UIScreen+MMLayershots.h"
 #import "SFPSDWriter+MMLayershots.h"
-#import "MMSimulatorKeyHandler.h"
+#import "UIWindow+MMSimulatorKeyHandler.h"
 
 static MMLayershots *_sharedInstance;
 
@@ -49,10 +49,6 @@ static MMLayershots *_sharedInstance;
         [self registerNotification];
     }
     _delegate = delegate;
-
-#if (TARGET_IPHONE_SIMULATOR)
-    [MMSimulatorKeyHandler attachHandlerToWindow:[UIApplication sharedApplication].delegate.window];
-#endif
 }
 
 - (void)dealloc {
