@@ -1,17 +1,17 @@
 //
-//  UIWindow+MMSimulatorKeyHandler.m
+//  UIWindow+SimulatorKeyHandler.m
 //  MMLayershots
 //
 //  Created by Vinh Phuc Dinh on 17/06/14.
 //
 //
 
-#import "UIWindow+MMSimulatorKeyHandler.h"
+#import "UIWindow+SimulatorKeyHandler.h"
 #import <objc/runtime.h>
 
 #if (TARGET_IPHONE_SIMULATOR)
 
-@implementation UIWindow (MMSimulatorKeyHandler)
+@implementation UIWindow (SimulatorKeyHandler)
 
 + (void)load {
     static dispatch_once_t onceToken;

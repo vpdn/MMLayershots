@@ -1,5 +1,5 @@
 //
-//  UIWindow+MMSimulatorKeyHandler.h
+//  UIWindow+SimulatorKeyHandler.h
 //  MMLayershots
 //
 //  Created by Vinh Phuc Dinh on 17/06/14.
@@ -14,6 +14,6 @@
  * into the responder chain and listening to key commands whenever ⇧⌘+s is pressed.
  */
 
-@interface UIWindow (MMSimulatorKeyHandler)
+@interface UIWindow (SimulatorKeyHandler)
 
 @end

@@ -11,7 +11,7 @@
 #import "CALayer+MMLayershots.h"
 #import "UIScreen+MMLayershots.h"
 #import "SFPSDWriter+MMLayershots.h"
-#import "UIWindow+MMSimulatorKeyHandler.h"
+#import "UIWindow+SimulatorKeyHandler.h"
 
 static MMLayershots *_sharedInstance;
 
