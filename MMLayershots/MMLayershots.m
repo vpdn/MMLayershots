@@ -142,11 +142,7 @@ static MMLayershots *_sharedInstance;
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    enum {
-        NoButtonIndex = 0,
-        YesButtonIndex
-    };
-    if (buttonIndex==YesButtonIndex) {
+    if (buttonIndex!=alertView.cancelButtonIndex) {
         [self createLayershotAndCallDelegate];
     }
 }
