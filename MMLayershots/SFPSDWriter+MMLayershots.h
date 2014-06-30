@@ -10,6 +10,6 @@
 
 @interface SFPSDWriter (MMLayershots)
 
-- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer;
+- (void)addImagesForView:(UIView *)view renderedToRootView:(UIView *)rootView;
 
 @end

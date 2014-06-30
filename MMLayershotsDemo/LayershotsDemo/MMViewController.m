@@ -25,6 +25,9 @@
 - (void)setupSampleView {
     self.view.backgroundColor = [UIColor lightGrayColor];
     
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:scrollView];
+    
     // white box
     UIView *box = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     box.backgroundColor = [UIColor whiteColor];
@@ -37,7 +40,7 @@
     box.layer.shadowOffset = CGSizeMake(2.0, 2.0);
     box.layer.shadowRadius = 2.0;
     box.layer.shadowOpacity = 0.5;
-    [self.view addSubview:box];
+    [scrollView addSubview:box];
 
     // orange box in box
     UIView *box2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];

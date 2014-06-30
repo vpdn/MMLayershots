@@ -179,7 +179,7 @@ static MMLayershots *_sharedInstance;
 
     for (UIWindow *window in allWindows) {
         [window.layer beginHidingSublayers];
-        [psdWriter addImagesForLayer:window.layer renderedToRootLayer:window.layer];
+        [psdWriter addImagesForView:window renderedToRootView:window];
         [window.layer endHidingSublayers];
     }
     NSData *psdData = [psdWriter createPSDData];
