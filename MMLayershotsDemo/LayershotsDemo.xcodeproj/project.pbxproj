@@ -363,7 +363,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if git rev-parse --is-inside-work-tree; then\n  git submodule init\n  git submodule update\nelse\n  echo \"error: README was probably too long. Tl;dr: Please clone the repo instead of using github's download button. Thanks, bye.\";\nfi;\nexit(0)";
+			shellScript = "if git rev-parse --is-inside-work-tree; then\n  git submodule init\n  git submodule update\nelse\n  echo \"error: README was probably too long. Tl;dr: Please clone the repo instead of using github's download button. Thanks, bye.\";\nfi;";
 		};
 /* End PBXShellScriptBuildPhase section */
 
