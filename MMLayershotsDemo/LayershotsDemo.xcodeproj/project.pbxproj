@@ -263,6 +263,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7E9B1E24192A6D2D003A3819 /* Build configuration list for PBXNativeTarget "LayershotsDemo" */;
 			buildPhases = (
+				7E96C2831961BEEC003635C1 /* Update git submodules - Because noone reads the docs */,
 				7E9B1DEE192A6D2D003A3819 /* Sources */,
 				7E9B1DEF192A6D2D003A3819 /* Frameworks */,
 				7E9B1DF0192A6D2D003A3819 /* Resources */,
@@ -348,6 +349,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7E96C2831961BEEC003635C1 /* Update git submodules - Because noone reads the docs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update git submodules - Because noone reads the docs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if git rev-parse --is-inside-work-tree; then\n  git submodule init\n  git submodule update\nelse\n  echo \"error: README was probably too long. Tl;dr: Please clone the repo instead of using github's download button. Thanks, bye.\";\nfi;\nexit(0)";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7E9B1DEE192A6D2D003A3819 /* Sources */ = {
