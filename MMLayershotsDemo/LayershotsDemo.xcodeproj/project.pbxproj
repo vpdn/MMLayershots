@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C8F046D1966CE4D003BB1AB /* MMViewController in Resources */ = {isa = PBXBuildFile; fileRef = 5C8F046C1966CE4D003BB1AB /* MMViewController */; };
 		7E9A064119504BAA00F23EF4 /* UIWindow+SimulatorKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9A063F19504BAA00F23EF4 /* UIWindow+SimulatorKeyHandler.m */; };
 		7E9B1DF6192A6D2D003A3819 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B1DF5192A6D2D003A3819 /* Foundation.framework */; };
 		7E9B1DF8192A6D2D003A3819 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B1DF7192A6D2D003A3819 /* CoreGraphics.framework */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C8F046C1966CE4D003BB1AB /* MMViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MMViewController; sourceTree = "<group>"; };
 		7E9A063F19504BAA00F23EF4 /* UIWindow+SimulatorKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SimulatorKeyHandler.m"; sourceTree = "<group>"; };
 		7E9A064019504BAA00F23EF4 /* UIWindow+SimulatorKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SimulatorKeyHandler.h"; sourceTree = "<group>"; };
 		7E9B1DF2192A6D2D003A3819 /* LayershotsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayershotsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,7 @@
 				7E9B1E07192A6D2D003A3819 /* Main.storyboard */,
 				7E9B1E0A192A6D2D003A3819 /* MMViewController.h */,
 				7E9B1E0B192A6D2D003A3819 /* MMViewController.m */,
+				5C8F046C1966CE4D003BB1AB /* MMViewController */,
 				7E9B1E0D192A6D2D003A3819 /* Images.xcassets */,
 				7E9B1DFC192A6D2D003A3819 /* Supporting Files */,
 			);
@@ -336,6 +339,7 @@
 				A60BAB3C1936229D00125E70 /* LICENSE.txt in Resources */,
 				7E9B1E0E192A6D2D003A3819 /* Images.xcassets in Resources */,
 				7E9B1E00192A6D2D003A3819 /* InfoPlist.strings in Resources */,
+				5C8F046D1966CE4D003BB1AB /* MMViewController in Resources */,
 				7E9B1E09192A6D2D003A3819 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

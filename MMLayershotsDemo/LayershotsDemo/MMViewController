@@ -53,7 +53,7 @@
 
     // Button in orange box
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    bt.frame = box2.bounds;
+    bt.frame = box2.frame;
     [bt setTitle:@"Button"
         forState:UIControlStateNormal];
     [box2 addSubview:bt];

@@ -181,9 +181,10 @@ static MMLayershots *_sharedInstance;
     // Only parse windows that are part of the requested screen
     allWindows = [allWindows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"screen == %@ AND self != %@", screen, self.hudWindow]];
 
-    for (UIWindow *window in allWindows) {
+    for (UIWindow *window in allWindows)
+    {
         [window.layer beginHidingSublayers];
-        [psdWriter addImagesForView:window renderedToRootView:window];
+        [psdWriter addImagesForLayer:window.layer renderedToRootLayer:window.layer];
         [window.layer endHidingSublayers];
     }
     NSData *psdData = [psdWriter createPSDData];
