@@ -9,21 +9,25 @@
 #import "SFPSDWriter+MMLayershots.h"
 #import "CALayer+MMLayershots.h"
 @implementation SFPSDWriter (MMLayershots)
-
-// Currently all layers are named "Layer".
-// See https://github.com/vpdn/MMLayershots/issues/2 for improvement suggestions.
-
+#pragma mark - Layer generation
 - (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer {
-    if (layer.hiddenBeforeHidingSublayers==NO) {
+    if (layer.hiddenBeforeHidingSublayers == NO) {
         layer.hidden = NO;
+
         if (layer.sublayers.count>0) {
             // add self
             UIImage *image = [rootLayer imageRepresentation];
-            [self addLayerWithCGImage:image.CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
-            
+
+            // Compute layer name
+            NSString *layerName = [self computeNameForLayer:layer];
+            [self addLayerWithCGImage:image.CGImage
+                              andName:layerName
+                           andOpacity:1.0
+                            andOffset:CGPointZero];
+
             // hide own layer visuals while rendering children
             NSMutableDictionary *layerProperties = [NSMutableDictionary new];
-            
+
             if (layer.backgroundColor) {
                 layerProperties[@"backgroundColor"] = (__bridge id)(layer.backgroundColor);
                 layer.backgroundColor = nil;
@@ -36,21 +40,21 @@
                 layerProperties[@"shadowColor"] = (__bridge id)(layer.shadowColor);
                 layer.shadowColor = nil;
             }
-            
+
 //            // create layer group
 //            [self openGroupLayerWithName:@"Group"];
-            
+
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [self addImagesForLayer:obj renderedToRootLayer:rootLayer];
             }];
-            
+
             // reset layer colors
             for (NSString *layerProperty in layerProperties) {
                 [layer setValue:layerProperties[layerProperty] forKey:layerProperty];
             }
-            
-            // close layer group
+
+            // Close layer group
 //            NSError *error = nil;
 //            [self closeCurrentGroupLayerWithError:&error];
 //            if (error) {
@@ -58,10 +62,67 @@
 //            }
         } else {
             // base case
-            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
+            NSString *layerName = [self computeNameForLayer:layer];
+            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
+                              andName:layerName
+                           andOpacity:1.0
+                             andOffset:CGPointZero];
         }
+
         layer.hidden = YES;
     }
 }
 
+#pragma mark - Layer naming
+- (NSString *)computeNameForLayer:(CALayer *)layer {
+    
+    // If no delegate, class name will be used
+    if (!layer.delegate) {
+        return [[layer class] description];
+    }
+
+    // If delegate, but not UIView subclass, use class description too
+    if (![layer.delegate isKindOfClass:[UIView class]]) {
+        return [[layer.delegate class] description];
+    }
+
+    // Extract view to determine name
+    UIView *view = (UIView *) layer.delegate;
+    NSAssert([view isKindOfClass:[UIView class]], @"Layer delegate is not a UIView");
+    NSString *viewName = view.accessibilityLabel;
+    if (viewName.length>0) {
+        return viewName;
+    }
+
+    // Check for text attribute (UILabel / UITextView)
+    if ([view respondsToSelector:@selector(text)]) {
+        id viewText = [view performSelector:@selector(text)];
+        if ([viewText isKindOfClass:[NSString class]]) {
+            if ([(NSString *)viewText length]) {
+                return viewText;
+            }
+        }
+    }
+
+    // Check for UIButton
+    if ([view isKindOfClass:[UIButton class]]) {
+        // According to docs: If both, title and attributed title are set,
+        // the attributed title is preferred. We conform to that order.
+
+        // Attributed title
+        NSString *viewText = [[(UIButton *)view currentAttributedTitle] string];
+        if (viewText.length > 0) {
+            return viewText;
+        }
+
+        // Normal title
+        viewText = [(UIButton *)view currentTitle];
+        if (viewText.length > 0) {
+            return viewText;
+        }
+        
+    }
+
+    return [[view class] description];
+}
 @end
