@@ -74,21 +74,23 @@
 }
 
 #pragma mark - Layer naming
-- (NSString *)computeNameForLayer:(CALayer *)alayer {
+- (NSString *)computeNameForLayer:(CALayer *)layer {
+    
     // If no delegate, class name will be used
-    if (!alayer.delegate) {
-        return [[alayer class] description];
+    if (!layer.delegate) {
+        return [[layer class] description];
     }
 
     // If delegate, but not UIView subclass, use class description too
-    if (![alayer.delegate isKindOfClass:[UIView class]]) {
-        return [[alayer.delegate class] description];
+    if (![layer.delegate isKindOfClass:[UIView class]]) {
+        return [[layer.delegate class] description];
     }
 
     // Extract view to determine name
-    UIView *view = (UIView *)alayer.delegate;
+    UIView *view = (UIView *) layer.delegate;
+    NSAssert([view isKindOfClass:[UIView class]], @"Layer delegate is not a UIView");
     NSString *viewName = view.accessibilityLabel;
-    if (viewName) {
+    if (viewName.length>0) {
         return viewName;
     }
 
@@ -102,29 +104,23 @@
         }
     }
 
-    // Check for attributedText (UILabel / UITextView / UITextField)
-    if ([view respondsToSelector:@selector(attributedText)]) {
-        id viewText = [view performSelector:@selector(attributedText)];
-        if ([viewText isKindOfClass:[NSAttributedString class]]) {
-            if ([(NSAttributedString *)viewText length]) {
-                return [(NSAttributedString *)viewText string];
-            }
-        }
-    }
-
     // Check for UIButton
     if ([view isKindOfClass:[UIButton class]]) {
+        // According to docs: If both, title and attributed title are set,
+        // the attributed title is preferred. We conform to that order.
+
+        // Attributed title
+        NSString *viewText = [[(UIButton *)view currentAttributedTitle] string];
+        if (viewText.length > 0) {
+            return viewText;
+        }
+
         // Normal title
-        NSString *viewText = [(UIButton *)view currentTitle];
+        viewText = [(UIButton *)view currentTitle];
         if (viewText.length > 0) {
             return viewText;
         }
         
-        // Attributed title
-        viewText = [[(UIButton *)view currentAttributedTitle] string];
-        if (viewText.length > 0) {
-            return viewText;
-        }
     }
 
     return [[view class] description];
