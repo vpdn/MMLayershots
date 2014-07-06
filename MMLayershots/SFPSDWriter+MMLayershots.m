@@ -9,21 +9,28 @@
 #import "SFPSDWriter+MMLayershots.h"
 #import "CALayer+MMLayershots.h"
 @implementation SFPSDWriter (MMLayershots)
-
-// Currently all layers are named "Layer".
-// See https://github.com/vpdn/MMLayershots/issues/2 for improvement suggestions.
-
-- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer {
-    if (layer.hiddenBeforeHidingSublayers==NO) {
+#pragma mark - Layer generation
+- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer
+{
+    if (layer.hiddenBeforeHidingSublayers == NO)
+    {
         layer.hidden = NO;
-        if (layer.sublayers.count>0) {
+
+        if (layer.sublayers.count>0)
+        {
             // add self
             UIImage *image = [rootLayer imageRepresentation];
-            [self addLayerWithCGImage:image.CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
-            
+
+            // Compute layer name
+            NSString *layerName = [self computeNameForLayer:layer];
+            [self addLayerWithCGImage:image.CGImage
+                              andName:layerName
+                           andOpacity:1.0
+                            andOffset:CGPointZero];
+
             // hide own layer visuals while rendering children
             NSMutableDictionary *layerProperties = [NSMutableDictionary new];
-            
+
             if (layer.backgroundColor) {
                 layerProperties[@"backgroundColor"] = (__bridge id)(layer.backgroundColor);
                 layer.backgroundColor = nil;
@@ -36,32 +43,95 @@
                 layerProperties[@"shadowColor"] = (__bridge id)(layer.shadowColor);
                 layer.shadowColor = nil;
             }
-            
+
 //            // create layer group
 //            [self openGroupLayerWithName:@"Group"];
-            
+
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [self addImagesForLayer:obj renderedToRootLayer:rootLayer];
             }];
-            
+
             // reset layer colors
             for (NSString *layerProperty in layerProperties) {
                 [layer setValue:layerProperties[layerProperty] forKey:layerProperty];
             }
-            
-            // close layer group
+
+            // Close layer group
 //            NSError *error = nil;
 //            [self closeCurrentGroupLayerWithError:&error];
 //            if (error) {
 //                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
 //            }
-        } else {
-            // base case
-            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage andName:@"Layer" andOpacity:1.0 andOffset:CGPointZero];
         }
+        else
+        {
+            // base case
+            NSString *layerName = [self computeNameForLayer:layer];
+            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
+                              andName:layerName
+                           andOpacity:1.0
+                             andOffset:CGPointZero];
+        }
+
         layer.hidden = YES;
     }
 }
 
+#pragma mark - Layer naming
+- (NSString *)computeNameForLayer:(CALayer *)alayer
+{
+    // If no delegate, class name will be used
+    if (!alayer.delegate)
+        return [[alayer class] description];
+
+    // If delegate, but not UIView subclass, use class description too
+    if (![alayer.delegate isKindOfClass:[UIView class]])
+        return [[alayer.delegate class] description];
+
+    // Extract view to determine name
+    UIView *view = (UIView *)alayer.delegate;
+    NSString *viewName = view.accessibilityLabel;
+    if (viewName)
+        return viewName;
+
+    // Check for text attribute (UILabel / UITextView)
+    if ([view respondsToSelector:@selector(text)])
+    {
+        id viewText = [view performSelector:@selector(text)];
+        if ([viewText isKindOfClass:[NSString class]])
+        {
+            if ([(NSString *)viewText length])
+                return viewText;
+        }
+    }
+
+    // Check for attributedText (UILabel / UITextView / UITextField)
+    if ([view respondsToSelector:@selector(attributedText)])
+    {
+        id viewText = [view performSelector:@selector(attributedText)];
+        if ([viewText isKindOfClass:[NSAttributedString class]])
+        {
+            if ([(NSAttributedString *)viewText length])
+                return [(NSAttributedString *)viewText string];
+        }
+    }
+
+    // Check for UIButton
+    if ([view isKindOfClass:[UIButton class]])
+    {
+        // Normal title
+        NSString *viewText = [(UIButton *)view currentTitle];
+        if (viewText.length > 0)
+            return viewText;
+        
+        // Attributed title
+        viewText = [[(UIButton *)view currentAttributedTitle] string];
+        if (viewText.length > 0)
+            return viewText;
+    }
+
+    // No text found, Add more tests ?
+    return [[view class] description];
+}
 @end

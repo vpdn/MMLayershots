@@ -25,6 +25,9 @@
 - (void)setupSampleView {
     self.view.backgroundColor = [UIColor lightGrayColor];
     
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:scrollView];
+    
     // white box
     UIView *box = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
     box.backgroundColor = [UIColor whiteColor];
@@ -37,7 +40,7 @@
     box.layer.shadowOffset = CGSizeMake(2.0, 2.0);
     box.layer.shadowRadius = 2.0;
     box.layer.shadowOpacity = 0.5;
-    [self.view addSubview:box];
+    [scrollView addSubview:box];
 
     // orange box in box
     UIView *box2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -47,7 +50,14 @@
     box2.layer.borderColor = [UIColor blackColor].CGColor;
     box2.center = (CGPoint){CGRectGetMidX(box.bounds), CGRectGetMidY(box.bounds)};
     [box addSubview:box2];
-    
+
+    // Button in orange box
+    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+    bt.frame = box2.bounds;
+    [bt setTitle:@"Button"
+        forState:UIControlStateNormal];
+    [box2 addSubview:bt];
+
 #if TARGET_IPHONE_SIMULATOR
     [[[UIAlertView alloc] initWithTitle:@"Note" message:@"The simulator doesn't trigger screenshot notifications when a screenshot is saved. Use ⇧⌘+S to trigger a simulated screenshot notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 ;
