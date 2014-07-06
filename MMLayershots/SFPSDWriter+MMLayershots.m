@@ -10,14 +10,11 @@
 #import "CALayer+MMLayershots.h"
 @implementation SFPSDWriter (MMLayershots)
 #pragma mark - Layer generation
-- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer
-{
-    if (layer.hiddenBeforeHidingSublayers == NO)
-    {
+- (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer {
+    if (layer.hiddenBeforeHidingSublayers == NO) {
         layer.hidden = NO;
 
-        if (layer.sublayers.count>0)
-        {
+        if (layer.sublayers.count>0) {
             // add self
             UIImage *image = [rootLayer imageRepresentation];
 
@@ -63,9 +60,7 @@
 //            if (error) {
 //                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
 //            }
-        }
-        else
-        {
+        } else {
             // base case
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
@@ -79,59 +74,59 @@
 }
 
 #pragma mark - Layer naming
-- (NSString *)computeNameForLayer:(CALayer *)alayer
-{
+- (NSString *)computeNameForLayer:(CALayer *)alayer {
     // If no delegate, class name will be used
-    if (!alayer.delegate)
+    if (!alayer.delegate) {
         return [[alayer class] description];
+    }
 
     // If delegate, but not UIView subclass, use class description too
-    if (![alayer.delegate isKindOfClass:[UIView class]])
+    if (![alayer.delegate isKindOfClass:[UIView class]]) {
         return [[alayer.delegate class] description];
+    }
 
     // Extract view to determine name
     UIView *view = (UIView *)alayer.delegate;
     NSString *viewName = view.accessibilityLabel;
-    if (viewName)
+    if (viewName) {
         return viewName;
+    }
 
     // Check for text attribute (UILabel / UITextView)
-    if ([view respondsToSelector:@selector(text)])
-    {
+    if ([view respondsToSelector:@selector(text)]) {
         id viewText = [view performSelector:@selector(text)];
-        if ([viewText isKindOfClass:[NSString class]])
-        {
-            if ([(NSString *)viewText length])
+        if ([viewText isKindOfClass:[NSString class]]) {
+            if ([(NSString *)viewText length]) {
                 return viewText;
+            }
         }
     }
 
     // Check for attributedText (UILabel / UITextView / UITextField)
-    if ([view respondsToSelector:@selector(attributedText)])
-    {
+    if ([view respondsToSelector:@selector(attributedText)]) {
         id viewText = [view performSelector:@selector(attributedText)];
-        if ([viewText isKindOfClass:[NSAttributedString class]])
-        {
-            if ([(NSAttributedString *)viewText length])
+        if ([viewText isKindOfClass:[NSAttributedString class]]) {
+            if ([(NSAttributedString *)viewText length]) {
                 return [(NSAttributedString *)viewText string];
+            }
         }
     }
 
     // Check for UIButton
-    if ([view isKindOfClass:[UIButton class]])
-    {
+    if ([view isKindOfClass:[UIButton class]]) {
         // Normal title
         NSString *viewText = [(UIButton *)view currentTitle];
-        if (viewText.length > 0)
+        if (viewText.length > 0) {
             return viewText;
+        }
         
         // Attributed title
         viewText = [[(UIButton *)view currentAttributedTitle] string];
-        if (viewText.length > 0)
+        if (viewText.length > 0) {
             return viewText;
+        }
     }
 
-    // No text found, Add more tests ?
     return [[view class] description];
 }
 @end
