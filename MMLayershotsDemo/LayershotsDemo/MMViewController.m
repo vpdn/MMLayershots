@@ -51,13 +51,6 @@
     box2.center = (CGPoint){CGRectGetMidX(box.bounds), CGRectGetMidY(box.bounds)};
     [box addSubview:box2];
 
-    // Button in orange box
-    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    bt.frame = box2.bounds;
-    [bt setTitle:@"Button"
-        forState:UIControlStateNormal];
-    [box2 addSubview:bt];
-
 #if TARGET_IPHONE_SIMULATOR
     [[[UIAlertView alloc] initWithTitle:@"Note" message:@"The simulator doesn't trigger screenshot notifications when a screenshot is saved. Use ⇧⌘+S to trigger a simulated screenshot notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 ;
