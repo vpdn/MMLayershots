@@ -95,17 +95,18 @@ The iPhone Simulator doesn't trigger a notification when a screenshot is saved (
 
 ##Notes
 - The generated psd file is currently bigger than it needs to be. There isn't any bounds calculation in yet, so every layer is rendered in full screen. ([Issue #1](https://github.com/vpdn/MMLayershots/issues/1))
-- Layers are currently not grouped
-- Layer are all named "Layer". ([Issue #2](https://github.com/vpdn/MMLayershots/issues/2))
+- <strike>Layers are currently not grouped</strike>
+- <strike>Layer are all named "Layer". ([Issue #2](https://github.com/vpdn/MMLayershots/issues/2))</strike>
 - The rendered psd is not pixel perfect, there <strike>might be</strike> are glitches. Test suite upcoming. ([Issue #8](https://github.com/vpdn/MMLayershots/issues/8))
 - <strike>Currently Layershots only supports portrait mode. ([Issue #5](https://github.com/vpdn/MMLayershots/issues/5))</strike>
 
-For a list of outstanding / missing features, check out the [next up page](https://github.com/vpdn/MMLayershots/wiki). Would be awesome if you could help out!
+For a list of outstanding / missing features, check out the github issues page. Would be awesome if you could help out!
 
 
 ##Thanks :star2:
 - Layershots uses [SFPSDWriter](https://github.com/shinyfrog/SFPSDWriter) by [@shinyfrog]( https://github.com/shinyfrog), a psd generation library with layer groups support, based on [@bengotow](https://github.com/bengotow)'s [PSDWriter](https://github.com/bengotow/PSDWriter).
 - Layer group support was added by [@ashikase](https://github.com/ashikase).
+- [@nicolasgoutaland](https://github.com/nicolasgoutaland) added layer naming.
 - Support for landscape mode was added by [@jwalapr](https://github.com/jwalapr).
 - The [first implementation](https://github.com/ndfred/Snapshot) of the idea was built during the [UIKonf](http://uikonf.com) Hackathon and written up by [@ndfred](http://twitter.com/ndfred).
 
