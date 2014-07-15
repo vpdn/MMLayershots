@@ -27,7 +27,7 @@ static void *currentGroupDepthKey;
             // Compute layer name
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:image.CGImage
-                              andName:layerName
+                              andName:[layerName stringByAppendingString:@"-Content"]
                            andOpacity:1.0
                             andOffset:CGPointZero];
 
@@ -49,7 +49,7 @@ static void *currentGroupDepthKey;
 
             // create layer group
             [self incrementCurrentGroupDepth];
-            [self openGroupLayerWithName:@"Group"];
+            [self openGroupLayerWithName:layerName];
 
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
