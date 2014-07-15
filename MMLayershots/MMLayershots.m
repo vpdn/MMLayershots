@@ -162,7 +162,6 @@ static MMLayershots *_sharedInstance;
     size.height = size.height * screen.scale;
     
     SFPSDWriter * psdWriter = [[SFPSDWriter alloc] initWithDocumentSize:size];
-
     NSArray *allWindows = [[UIApplication sharedApplication] windows];
     
 #if (DEBUG)
@@ -182,6 +181,8 @@ static MMLayershots *_sharedInstance;
         [psdWriter addImagesForLayer:window.layer renderedToRootLayer:window.layer];
         [window.layer endHidingSublayers];
     }
+    
+    [psdWriter.layers setValue:@(YES) forKey:@"shouldUnpremultiplyLayerData"];
     NSData *psdData = [psdWriter createPSDData];
     return psdData;
 }
