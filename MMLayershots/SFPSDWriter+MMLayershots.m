@@ -70,6 +70,11 @@ static void *currentGroupDepthKey;
             }
         } else {
             // base case
+            
+            if (layer.sublayers>0) {
+                // reshow sublayers before taking a snapshot
+                [self showLayersInSubtree:layer];
+            }
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
                               andName:layerName
@@ -78,6 +83,15 @@ static void *currentGroupDepthKey;
         }
 
         layer.hidden = YES;
+    }
+}
+
+- (void)showLayersInSubtree:(CALayer *)layer {
+    if (!layer.hiddenBeforeHidingSublayers) {
+        layer.hidden = NO;
+        for (CALayer *sublayer in layer.sublayers) {
+            [self showLayersInSubtree:sublayer];
+        }
     }
 }
 
