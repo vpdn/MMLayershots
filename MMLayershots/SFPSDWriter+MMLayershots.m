@@ -6,22 +6,28 @@
 //  Copyright (c) 2014 Mocava Mobile. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "SFPSDWriter+MMLayershots.h"
 #import "CALayer+MMLayershots.h"
+
+#define PSD_MAX_GROUP_DEPTH 10
+static void *currentGroupDepthKey;
+
 @implementation SFPSDWriter (MMLayershots)
+
 #pragma mark - Layer generation
 - (void)addImagesForLayer:(CALayer *)layer renderedToRootLayer:(CALayer *)rootLayer {
     if (layer.hiddenBeforeHidingSublayers == NO) {
         layer.hidden = NO;
 
-        if (layer.sublayers.count>0) {
+        if (layer.sublayers.count>0 && self.currentGroupDepth<PSD_MAX_GROUP_DEPTH) {
             // add self
             UIImage *image = [rootLayer imageRepresentation];
 
             // Compute layer name
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:image.CGImage
-                              andName:layerName
+                              andName:[layerName stringByAppendingString:@"-Content"]
                            andOpacity:1.0
                             andOffset:CGPointZero];
 
@@ -41,8 +47,9 @@
                 layer.shadowColor = nil;
             }
 
-//            // create layer group
-//            [self openGroupLayerWithName:@"Group"];
+            // create layer group
+            [self incrementCurrentGroupDepth];
+            [self openGroupLayerWithName:layerName];
 
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -55,11 +62,12 @@
             }
 
             // Close layer group
-//            NSError *error = nil;
-//            [self closeCurrentGroupLayerWithError:&error];
-//            if (error) {
-//                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
-//            }
+            NSError *error = nil;
+            [self closeCurrentGroupLayerWithError:&error];
+            [self decrementCurrentGroupDepth];
+            if (error) {
+                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
+            }
         } else {
             // base case
             NSString *layerName = [self computeNameForLayer:layer];
@@ -125,4 +133,46 @@
 
     return [[view class] description];
 }
+
+- (int)currentGroupDepth {
+    NSNumber *currentGroupDepth = nil;
+    currentGroupDepth = objc_getAssociatedObject(self, &currentGroupDepthKey);
+    if (currentGroupDepth != nil) {
+        return currentGroupDepth.intValue;
+    }
+    return 0;
+}
+
+- (void)incrementCurrentGroupDepth {
+    NSNumber *currentGroupDepth = nil;
+    currentGroupDepth = objc_getAssociatedObject(self, &currentGroupDepthKey);
+    int currentGroupDepthValue = 0;
+    if (currentGroupDepth != nil) {
+        currentGroupDepthValue = [currentGroupDepth intValue];
+    }
+    currentGroupDepthValue++;
+    objc_setAssociatedObject(self, &currentGroupDepthKey, @(currentGroupDepthValue), OBJC_ASSOCIATION_COPY);
+    if (currentGroupDepthValue> PSD_MAX_GROUP_DEPTH) {
+        NSLog(@"Current group depth (%d) is above PSDs maximum of %d!", currentGroupDepthValue, PSD_MAX_GROUP_DEPTH);
+    }
+}
+
+- (void)decrementCurrentGroupDepth {
+    NSNumber *currentGroupDepth = nil;
+    currentGroupDepth = objc_getAssociatedObject(self, &currentGroupDepthKey);
+    int currentGroupDepthValue = 0;
+    if (currentGroupDepth != nil) {
+        currentGroupDepthValue = [currentGroupDepth intValue];
+        currentGroupDepthValue--;
+        if (currentGroupDepthValue>0) {
+            objc_setAssociatedObject(self, &currentGroupDepthKey, @(currentGroupDepthValue), OBJC_ASSOCIATION_COPY);
+        } else {
+            //remove
+            objc_setAssociatedObject(self, &currentGroupDepthKey, nil, OBJC_ASSOCIATION_COPY);
+        }
+    } else {
+        NSLog(@"Can't decrement current group value because it is not set.");
+    }
+}
+
 @end
