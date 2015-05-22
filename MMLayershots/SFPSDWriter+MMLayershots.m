@@ -22,14 +22,14 @@ static void *currentGroupDepthKey;
 
         if (layer.sublayers.count>0 && self.currentGroupDepth<PSD_MAX_GROUP_DEPTH) {
             // add self
-            UIImage *image = [rootLayer imageRepresentation];
+            UIImage *image = [layer imageRepresentation];
 
             // Compute layer name
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:image.CGImage
                               andName:[layerName stringByAppendingString:@"-Content"]
                            andOpacity:1.0
-                            andOffset:CGPointZero];
+                            andOffset:[layer convertPoint:CGPointZero toLayer:nil]];
 
             // hide own layer visuals while rendering children
             NSMutableDictionary *layerProperties = [NSMutableDictionary new];
@@ -76,10 +76,10 @@ static void *currentGroupDepthKey;
                 [self showLayersInSubtree:layer];
             }
             NSString *layerName = [self computeNameForLayer:layer];
-            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
+            [self addLayerWithCGImage:[layer imageRepresentation].CGImage
                               andName:layerName
                            andOpacity:1.0
-                             andOffset:CGPointZero];
+                             andOffset:[layer convertPoint:CGPointZero toLayer:nil]];
         }
 
         layer.hidden = YES;
