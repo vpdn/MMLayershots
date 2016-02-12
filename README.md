@@ -49,7 +49,7 @@ The run the following command to initialize the submodule:
 
 ##How to use Layershots?
 
-The preferred way to install is via Cocoapods. Add this to your Podfile:
+The preferred way to install is via CocoaPods. Add this to your Podfile:
 	
 	pod 'MMLayershots'
 
@@ -115,4 +115,4 @@ For a list of outstanding / missing features, check out the github issues page. 
 [framer.js sample]: http://vpdn.github.io/images/2014-05-18_Layershots/clockshots_animation.gif
 [Framer.js]: http://framerjs.com
 [Clockshots]: http://clockshots.com
-[Cocoapods Trunk]: http://blog.cocoapods.org/CocoaPods-Trunk/#trunk
+[CocoaPods Trunk]: http://blog.cocoapods.org/CocoaPods-Trunk/#trunk
