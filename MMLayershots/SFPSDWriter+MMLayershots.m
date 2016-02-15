@@ -20,16 +20,16 @@ static void *currentGroupDepthKey;
     if (layer.hiddenBeforeHidingSublayers == NO) {
         layer.hidden = NO;
 
-        if (layer.sublayers.count>0 && self.currentGroupDepth<PSD_MAX_GROUP_DEPTH) {
+        if (layer.sublayers.count > 0) {
             // add self
-            UIImage *image = [rootLayer imageRepresentation];
+            UIImage *image = [layer imageRepresentation];
 
             // Compute layer name
             NSString *layerName = [self computeNameForLayer:layer];
             [self addLayerWithCGImage:image.CGImage
                               andName:[layerName stringByAppendingString:@"-Content"]
                            andOpacity:1.0
-                            andOffset:CGPointZero];
+                            andOffset:[layer convertPoint:CGPointZero toLayer:nil]];
 
             // hide own layer visuals while rendering children
             NSMutableDictionary *layerProperties = [NSMutableDictionary new];
@@ -48,8 +48,14 @@ static void *currentGroupDepthKey;
             }
 
             // create layer group
-            [self incrementCurrentGroupDepth];
-            [self openGroupLayerWithName:layerName];
+            BOOL newGroupAdded = NO;
+            if (self.currentGroupDepth<PSD_MAX_GROUP_DEPTH) {
+                // A New group was added
+                newGroupAdded = YES;
+
+                [self incrementCurrentGroupDepth];
+                [self openGroupLayerWithName:layerName];
+            }
 
             // render children
             [[layer.sublayers copy] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -61,25 +67,22 @@ static void *currentGroupDepthKey;
                 [layer setValue:layerProperties[layerProperty] forKey:layerProperty];
             }
 
-            // Close layer group
-            NSError *error = nil;
-            [self closeCurrentGroupLayerWithError:&error];
-            [self decrementCurrentGroupDepth];
-            if (error) {
-                NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
+            // Close layer group if needed
+            if (newGroupAdded) {
+                NSError *error = nil;
+                [self closeCurrentGroupLayerWithError:&error];
+                [self decrementCurrentGroupDepth];
+                if (error) {
+                    NSLog(@"%@ - %@", error.localizedDescription, error.localizedRecoveryOptions);
+                }
             }
         } else {
-            // base case
-            
-            if (layer.sublayers>0) {
-                // reshow sublayers before taking a snapshot
-                [self showLayersInSubtree:layer];
-            }
+            // Base case
             NSString *layerName = [self computeNameForLayer:layer];
-            [self addLayerWithCGImage:[rootLayer imageRepresentation].CGImage
+            [self addLayerWithCGImage:[layer imageRepresentation].CGImage
                               andName:layerName
                            andOpacity:1.0
-                             andOffset:CGPointZero];
+                             andOffset:[layer convertPoint:CGPointZero toLayer:nil]];
         }
 
         layer.hidden = YES;
